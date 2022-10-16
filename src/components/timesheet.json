@@ -1,0 +1,163 @@
+{
+    "result": [
+      {
+        "id": "ev:249522453136435",
+        "name": "Implementation",
+        "projectId": "ev:249522449571941",
+        "projectName": "KZN DOT-01",
+        "taskTimes": [
+          {
+            "id": "ev:249522453136435",
+            "date": "2022-09-05",
+            "manualTime": 14400
+          },
+          {
+            "id": "ev:249522453136435",
+            "date": "2022-09-06",
+            "manualTime": 10800
+          }
+        ],
+        "totalTime": 25200
+      },
+      {
+        "id": "ev:249522459818059",
+        "name": "Implementation",
+        "projectId": "ev:249522457083037",
+        "projectName": "KZN DOT-02|CEP",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:249523131111781",
+        "name": "General",
+        "projectId": "ev:249523127438027",
+        "projectName": "PD-Shesha Framework",
+        "taskTimes": [
+          {
+            "id": "ev:249523131111781",
+            "date": "2022-09-05",
+            "manualTime": 25200
+          },
+          {
+            "id": "ev:249523131111781",
+            "date": "2022-09-06",
+            "manualTime": 28800
+          },
+          {
+            "id": "ev:249523131111781",
+            "date": "2022-09-07",
+            "manualTime": 18000
+          },
+          {
+            "id": "ev:249523131111781",
+            "date": "2022-09-08",
+            "manualTime": 36000
+          },
+          {
+            "id": "ev:249523131111781",
+            "date": "2022-09-09",
+            "comment": "TESTING INTER",
+            "manualTime": 18000
+          }
+        ],
+        "totalTime": 126000
+      },
+      {
+        "id": "ev:249523254538420",
+        "name": "General",
+        "projectId": "ev:249523252700035",
+        "projectName": "BD-Mentoring",
+        "taskTimes": [
+          {
+            "id": "ev:249523254538420",
+            "date": "2022-09-05",
+            "manualTime": 7200
+          },
+          {
+            "id": "ev:249523254538420",
+            "date": "2022-09-06",
+            "manualTime": 3600
+          },
+          {
+            "id": "ev:249523254538420",
+            "date": "2022-09-07",
+            "manualTime": 10800
+          },
+          {
+            "id": "ev:249523254538420",
+            "date": "2022-09-08",
+            "manualTime": 7200
+          },
+          {
+            "id": "ev:249523254538420",
+            "date": "2022-09-09",
+            "manualTime": 3600
+          }
+        ],
+        "totalTime": 32400
+      },
+      {
+        "id": "ev:252824116550384",
+        "name": "Implementation",
+        "projectId": "ev:252824114653263",
+        "projectName": "eThekwini-01",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:254620013727168",
+        "name": "Implementation",
+        "projectId": "ev:254620009346750",
+        "projectName": "GP DOE-01|eAdmissions",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:254620014444612",
+        "name": "Support",
+        "projectId": "ev:254620009346750",
+        "projectName": "GP DOE-01|eAdmissions",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:254620015597338",
+        "name": "Implementation (New Costed features)",
+        "projectId": "ev:254620009346750",
+        "projectName": "GP DOE-01|eAdmissions",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:258110920797535",
+        "name": "Implementation",
+        "projectId": "ev:258043020621913",
+        "projectName": "eThekwini-02|CEP",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:258162067840416",
+        "name": "Implementation",
+        "projectId": "ev:258162065757988",
+        "projectName": "KZN OTP-02|Bursary Management System",
+        "taskTimes": [],
+        "totalTime": 0
+      },
+      {
+        "id": "ev:261661892340558",
+        "name": "Bug fixes on existing/original features",
+        "projectId": "ev:254620009346750",
+        "projectName": "GP DOE-01|eAdmissions",
+        "taskTimes": [],
+        "totalTime": 0
+      }
+    ],
+    "dailyTimes": [
+      "2022-09-09",
+      "2022-09-08",
+      "2022-09-07",
+      "2022-09-06",
+      "2022-09-05"
+    ]
+  }
