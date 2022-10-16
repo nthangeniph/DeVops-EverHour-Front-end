@@ -1,0 +1,23 @@
+.cover{
+display: flex;
+border: solid 2.5px #32527b;
+width: 16.25rem;
+height: 4.375rem;
+margin: 1rem;
+background-color: white;
+
+.itemDetail{
+height: 3.2rem;
+overflow-y: scroll;
+margin: auto 3px;
+}
+}
+.moving{
+    display: flex;
+    border:  dashed 3px #32527b;
+    width: 16.25rem;
+    height: 4.375rem;
+    margin: 1rem;
+    background-color: white; 
+
+}
