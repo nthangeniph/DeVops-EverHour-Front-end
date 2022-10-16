@@ -1,9 +1,10 @@
-import { BugOutlined } from '@ant-design/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { WorkItemTypes } from '../../../enums';
 import style from './style.module.scss';
+
+import { GetWorkItemType } from './utilis';
+
 
 
 
@@ -14,10 +15,10 @@ interface IWorkItemProps{
 
 }
 
-const WorkItem:FC<IWorkItemProps>=({id,details})=>{
+const WorkItem:FC<IWorkItemProps>=({id,details,type})=>{
     const [{isDragging},drag]=useDrag(()=>({
         type:'item',
-        item:{id,details},
+        item:{id,details,type},
         collect:(monitor)=>({
             isDragging:!!monitor.isDragging(),
         }),
@@ -43,8 +44,7 @@ const WorkItem:FC<IWorkItemProps>=({id,details})=>{
     >
      {!isDragging && (
      <>
-     <BugOutlined style={{color:'red' ,margin:'auto 5px'}}/>
-     <FontAwesomeIcon icon="fa-solid fa-book-open-cover" />
+     {GetWorkItemType(type)}
      <span className={style.itemDetail}>{details}</span> </>
      )
    }

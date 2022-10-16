@@ -1,44 +1,72 @@
-import { BugOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { WorkItemTypes } from '../enums';
 import styles from '../styles/Home.module.css'
-import { IItemProps, Item } from './item';
+import { EverHourDrop } from './EverHourDrop';
+import { IItemProps } from './item';
 import { ResolvedIsland } from './ResolvedIsland';
-import { WorkItem } from './ResolvedIsland/Workitem';
+import timeSheet from './timesheet.json';
+
 const ResolvedItems=[
     {
         id:'8355',
-        details:'send appeals back to POS'
+        details:'send appeals back to POS',
+        type:WorkItemTypes.Bug
     },
     {
         id:'8333325',
-        details:'When adding a new school, including schooling gender'
+        details:'When adding a new school, including schooling gender',
+        type:WorkItemTypes.User_Story
     },
     {
         id:'837543',
-        details:'Add Export Button On The Inspection Assignment Details View'
+        details:'Add Export Button On The Inspection Assignment Details View',
+        type:WorkItemTypes.User_Story
     },
     {
         id:'868855',
-        details:'API: Clean-up unused Properties and columns especially on SchoolApplication'
+        details:'API: Clean-up unused Properties and columns especially on SchoolApplication',
+        type:WorkItemTypes.Feature
     },
     {
         id:'83155',
-        details:'Confirmation for Invite to Interview has some words missing'
+        details:'Confirmation for Invite to Interview has some words missing',
+        type:WorkItemTypes.Task
+
     },
     {
         id:'833005',
-        details:'API: Enforce controls when registering a new Learner and Parent'
+        details:'API: Enforce controls when registering a new Learner and Parent',
+        type:WorkItemTypes.Bug
     },
     {
         id:'8775',
-        details:'DevOps Resoved'
+        details:'DevOps Resoved',
+        type:WorkItemTypes.Task
     },
     {
         id:'8255',
-        details:'Lungile N Resoved'
-    }
+        details:'Lungile N Resoved',
+        type:WorkItemTypes.Feature
+    },
+    {
+        id:'868855',
+        details:'API: Clean-up unused Properties and columns especially on SchoolApplication',
+        type:WorkItemTypes.User_Story
+    },
+    {
+        id:'83155',
+        details:'Confirmation for Invite to Interview has some words missing',
+        type:WorkItemTypes.Task
+
+    },
+    {
+        id:'833005',
+        details:'API: Enforce controls when registering a new Learner and Parent',
+        type:WorkItemTypes.Bug
+    },
 ]
+
 const DragDrop=()=>{
     const [board,setBoard]=useState<IItemProps[]>([]);
     const [{isOver},drop]=useDrop(()=>({
@@ -54,32 +82,18 @@ const DragDrop=()=>{
             return !!item.id
         }
     }));
+
+
+console.log("timeSheets ::",timeSheet)
    
    
     return (
         <div>
-           <div className={styles.Pictures} style={{display:'flex'}}>
-         
-           </div>
-           <ResolvedIsland>
-            <>
-            {
-                ResolvedItems.slice(0,6).map(({details,id})=>{
-                    return (
-                    <>
-                    <WorkItem id={id} details={details} key={id}/>
-                    </>
-                    )
-                })
-            }</>
-         
-           </ResolvedIsland>
-           <div className={styles.Board} style={{width:'300px',height:'400px',border:'solid 5px red',color:'black'}} ref={drop}>
-           {
-                board.map(({details,id})=>{
-                    return <Item id={id} details={details} key={id}/>
-                })
-            }
+           <ResolvedIsland ResolvedItems={ResolvedItems}/>
+    
+           <div className={styles.Board} style={{width:'100%',height:'600px',color:'black'}} ref={drop}>
+    
+            <EverHourDrop dailyTimes={timeSheet?.dailyTimes}/>
            </div>
         </div>
     )

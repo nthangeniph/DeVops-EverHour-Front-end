@@ -1,11 +1,13 @@
 import { BugOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useDrag } from 'react-dnd';
+import { WorkItemTypes } from '../enums';
 
 
 export interface IItemProps{
     id:string;
     details?:string;
+    type:WorkItemTypes;
 }
 const Item=({id,details}:IItemProps)=>{
     const [{isDragging},drag]=useDrag(()=>({

@@ -7,60 +7,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.coverView}>
-      {/* <table className="table-passengers-not-injured" style={{ width: '100%' }}>
-        <thead>
-          <tr>
-            <th><span>Tasks</span></th>
-            <th>{<span>Monday <br/>oct 3</span>}</th>
-            <th>{<span>Tuesday <br/>oct 4</span>}</th>
-            <th>{<span>Wednsday <br/>oct 5</span>}</th>
-            <th>{<span>Thursday <br/>oct 6</span>}</th>
-            <th>{<span>Friday <br/>oct 7</span>}</th>
-            <th>{<span>Saturday <br/>oct 8</span>}</th>
-            <th>{<span>Sunday <br/>oct 9</span>}</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-            <td>
-              <span>Implementation</span>
-  
-            </td>
-           </tr> 
-        </tbody>
-      </table> */}
+     
       <DragDrop/>
         
       </div>
