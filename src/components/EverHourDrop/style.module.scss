@@ -1,41 +1,19 @@
-.everHourContainer{
-display: flex;
-justify-content: space-between;
-width: 90%;
-margin: 5px 20% 5px 0px;
-background-color: #ededed
-;
 
-.RecentTask{
+.Board{
+    width: 90%;
+    height: auto;
+    background-color: #F0FFFF;
+    margin: 5px auto 20px auto;
     display: flex;
-    flex: 1.7;
-    height: 3rem;
-    justify-content: center;
-    justify-items: center;
-    border-right: solid  2px #b1dbc4;
-    border-bottom: solid 2px #b1dbc4;
-    border-top: solid 2px #b1dbc4;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    color: black;
+    border: solid 2px #32527b;
+    overflow-y: scroll;
 }
-.DayTask{
-    display: flex;
-    flex: 1;
-    border-right: solid  2px #b1dbc4;
-    border-bottom: solid 2px #b1dbc4;
-    border-top: solid 2px #b1dbc4;
-    padding: 2px;
-    height: 3rem;
-    justify-content: center;
-
-
-}
-.TotalTime{
-    display: flex;
-    flex: 1.2;
-    height: 3rem;
-    justify-content: center;
-    border-right: solid  2px #b1dbc4;
-    border-bottom: solid 2px #b1dbc4;
-    border-top: solid 2px #b1dbc4;
-}
-
-}
+.custom {
+    .ant-collapse-content-box {
+      padding: 0;
+      background-color: aquamarine;
+     }
+  }

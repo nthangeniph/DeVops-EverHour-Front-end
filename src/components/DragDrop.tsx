@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useDrop } from 'react-dnd';
 import { WorkItemTypes } from '../enums';
-import styles from '../styles/Home.module.css'
-import { EverHourDrop } from './EverHourDrop';
-import { IItemProps } from './item';
+import { EverHourHub } from './EverHourDrop';
 import { ResolvedIsland } from './ResolvedIsland';
-import timeSheet from './timesheet.json';
+
 
 const ResolvedItems=[
     {
@@ -68,33 +65,25 @@ const ResolvedItems=[
 ]
 
 const DragDrop=()=>{
-    const [board,setBoard]=useState<IItemProps[]>([]);
-    const [{isOver},drop]=useDrop(()=>({
-        accept:'item',
-        drop:(item:IItemProps)=>{
-            console.log('details ::',item.id)
-            setBoard(prev=>[...prev,item])
-        },
-        collect:(monitor)=>({
-            isOver:!!monitor.isOver()
-        }),
-        canDrop:(item,monitor)=>{
-            return !!item.id
-        }
-    }));
+  
+    const [hydrated, setHydrated] = useState(false);
+    useEffect(() => {
+        setHydrated(true);
+    }, []);
+    if (!hydrated) {
+        // Returns null on first render, so the client and server match
+        return null;
+    }
 
-
-console.log("timeSheets ::",timeSheet)
-   
-   
     return (
         <div>
-           <ResolvedIsland ResolvedItems={ResolvedItems}/>
-    
-           <div className={styles.Board} style={{width:'100%',height:'600px',color:'black'}} ref={drop}>
-    
-            <EverHourDrop dailyTimes={timeSheet?.dailyTimes}/>
-           </div>
+           <ResolvedIsland ResolvedItems={ResolvedItems} />
+            <div style={{height:'500px',overflow:'scroll'}}>
+            <EverHourHub/> 
+            </div>
+           
+            
+                    
         </div>
     )
 }

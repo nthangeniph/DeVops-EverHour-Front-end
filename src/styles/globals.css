@@ -24,3 +24,7 @@ a {
     background-color: white;
   }
 }
+
+.ant-collapse-content > .ant-collapse-content-box{
+  padding: 1px !important;
+}
