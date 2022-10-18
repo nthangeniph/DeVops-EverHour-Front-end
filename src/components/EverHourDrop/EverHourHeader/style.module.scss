@@ -1,0 +1,41 @@
+.everHourContainer{
+display: flex;
+justify-content: space-between;
+width: 100%;
+margin: 0px;
+background-color: #ededed
+;
+
+.RecentTask{
+    display: flex;
+    flex: 2;
+    height: 3rem;
+    justify-content: center;
+    justify-items: center;
+    border-right: solid  2px #b1dbc4;
+    border-bottom: solid 2px #b1dbc4;
+    border-top: solid 2px #b1dbc4;
+}
+.DayTask{
+    display: flex;
+    flex: 1;
+    border-right: solid  2px #b1dbc4;
+    border-bottom: solid 2px #b1dbc4;
+    border-top: solid 2px #b1dbc4;
+    padding: 2px;
+    height: 3rem;
+    justify-content: center;
+
+
+}
+.TotalTime{
+    display: flex;
+    flex: 1.2;
+    height: 3rem;
+    justify-content: center;
+    border-right: solid  2px #b1dbc4;
+    border-bottom: solid 2px #b1dbc4;
+    border-top: solid 2px #b1dbc4;
+}
+
+}

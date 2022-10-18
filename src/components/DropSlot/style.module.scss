@@ -1,0 +1,18 @@
+.dropContainer{
+        display: flex;
+        flex: 1;
+        border: dashed 2px black;
+        padding: 2px;
+        height: 3rem;
+        justify-content: center;
+    
+
+}
+.isOverColumn{
+    display: flex;
+    flex: 2;
+    border: solid 3px green;
+    padding: 2px;
+    height: 5rem;
+    justify-content: center;
+}

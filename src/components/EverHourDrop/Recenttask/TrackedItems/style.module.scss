@@ -1,0 +1,24 @@
+.cover{
+    width: 100%;
+    display: flex;
+    .items{
+        display: flex;
+        flex: 1;
+        justify-content: flex-start;
+        width: 100%;
+        border-right: solid 1px rgb(201, 192, 192);
+    }
+    .actions{
+        display: none;
+  
+    }
+  
+}
+
+.cover:hover {
+    .actions{
+    display: block;
+    width: 20%;
+    margin: 0px auto;
+    }
+}

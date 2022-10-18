@@ -1,0 +1,52 @@
+.everHourContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: hwb(0 93% 7%)
+    ;
+    
+    .RecentTask{
+        display: block;
+        flex: 2;
+        height: 3rem;
+        border-right: solid  1px #b1dbc4;
+        border-bottom: solid 1px #b1dbc4;
+        border-top: solid 1px #b1dbc4;
+        overflow-x: scroll;
+        white-space: nowrap;
+        
+
+        .projectName{
+            margin: 0 0px 0 40px;
+            font-style: italic;
+            font-size:0.6vw;
+            color: grey;
+       
+        }
+        .Name{
+            margin: 0 0 0 20px;
+        }
+    }
+    .DayTask{
+        display: flex;
+        flex: 1;
+        border-right: solid  1px #b1dbc4;
+        border-bottom: solid 1px #b1dbc4;
+        border-top: solid 1px #b1dbc4;
+        padding: 2px;
+        height: 3rem;
+        justify-content: center;
+    
+    
+    }
+    .TotalTime{
+        display: flex;
+        flex: 1.2;
+        height: 3rem;
+        justify-content: center;
+        border-right: solid  1px #b1dbc4;
+        border-bottom: solid 1px #b1dbc4;
+        border-top: solid 1px #b1dbc4;
+    }
+    
+    }
