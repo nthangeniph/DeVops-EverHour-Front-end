@@ -9,8 +9,10 @@ import style from './style.module.scss'
 export interface IDropProps{
     setResolvedItem?:(value:IResolvedProps)=>void;
     resolvedItem?:IResolvedProps;
+    
 }
-export const DropSlot:FC<any>=({resolvedItem,setResolvedItem})=>{
+export const DropSlot:FC<IDropProps>=({resolvedItem,setResolvedItem})=>{
+
     const [{isOver},drop]=useDrop(()=>({
         accept:'item',
         drop:(item:IItemProps)=>{
@@ -31,7 +33,7 @@ export const DropSlot:FC<any>=({resolvedItem,setResolvedItem})=>{
                       maxLength={2}  
                       style={{width:'100%'}}
                       onChange={({target:{value}})=>{
-                        if(!isNaN(parseInt(value)))setResolvedItem(()=>({...resolvedItem,time:parseInt(value)}))}
+                        if(!isNaN(parseInt(value)))setResolvedItem(({...resolvedItem,time:parseInt(value)}))}
                       
                     }/>
         </div>

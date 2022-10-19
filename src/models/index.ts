@@ -18,4 +18,5 @@ export interface IRecentTaskProps {
     week?:IWeek;
     taskTimes?: Array<ITimeSlot>;
     totalTime?:number;
+    setIsEditing?:(value:boolean)=>void;
 }

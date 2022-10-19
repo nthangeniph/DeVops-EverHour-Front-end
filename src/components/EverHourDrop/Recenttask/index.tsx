@@ -21,7 +21,7 @@ export interface IResolvedProps{
 }
 
 
-export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes, id,totalTime, week }) => {
+export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes, id,totalTime, week ,setIsEditing}) => {
 
     const [activeColumn,setActiveColumn]=useState<string>();
     const [resolvedItem,setResolvedItem]=useState<IResolvedProps>();
@@ -34,14 +34,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes,
 
     const weekdays = getDaysMonth(week.from, week.to);
 
-    const getTaskId=()=>{
-        return weekdays.map(dt=>`${id}${dt.replaceAll("-","")}`)
-        
-    }
-    const isActiveColumn=(id:string)=>{
-        return id==activeColumn;
-    }
 
+     const handleDoubleClick=(date:string)=>{
+        let item:IResolvedProps={
+            id,
+            ...taskTimes.filter(({ date }) => date==date)
+        }
+          setResolvedItem(()=>item);
+          setIsEditing(true);
+     }
 
     console.log("active id ::",resolvedItem)
     return (
@@ -53,31 +54,30 @@ export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes,
                 >{projectName}  </span>
 
             </div>
-            <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[0]))}>
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[0])}>
                 <span>
                     {/* {convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[0])[0]?.manualTime) || ''} */} 
                    
                 </span>
                 <TrackedItems/>
             </div>
-            <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[1]))}>
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[1])}>
                 <span>
                     {convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[1])[0]?.manualTime) || ''}  
                 </span>
             </div>
-           {!isActiveColumn(getTaskId()[2]) ? <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[2]))}>
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[2])}>
                 <span>
                   {resolvedItem?.details? `@${resolvedItem.id} (${resolvedItem.time} hrs)`:convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[2])[0]?.manualTime) || ''}
                 </span>
-            </div>:
-            <DropSlot setResolvedItem={setResolvedItem} resolvedItem={resolvedItem} />
-            }
-            <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[3]))}>
+            </div>
+         
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[3])}>
                 <span>
                     {convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[3])[0]?.manualTime) || ''}
                 </span>
             </div>
-            <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[4]))}>
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[4])}>
                 <div className={style.dateDetails}>
                     <span>
                         {convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[4])[0]?.manualTime) || ''}
@@ -85,12 +85,12 @@ export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes,
                 </div>
 
             </div>
-            <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[5]))}>
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[5])}>
                 <span>
                     {convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[5])[0]?.manualTime) || ''}
                 </span>
             </div>
-            <div className={style.DayTask} onDoubleClick={()=>setActiveColumn(()=>(getTaskId()[6]))}>
+            <div className={style.DayTask} onDoubleClick={()=>handleDoubleClick(weekdays[6])}>
                 <span>
                     {convertSecondsToHours(taskTimes?.filter(({ date }) => date == weekdays[6])[0]?.manualTime) || ''}
                 </span>

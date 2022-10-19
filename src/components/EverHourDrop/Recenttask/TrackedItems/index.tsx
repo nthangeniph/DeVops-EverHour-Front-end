@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { WorkItemTypes } from '../../../../enums';
 import { ITimeSlot } from '../../../../models';
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import { CiEdit } from "react-icons/ci";
 import { GetWorkItemType } from '../../../ResolvedIsland/Workitem/utilis';
 import style from './style.module.scss';
 import { Tooltip } from 'antd';
@@ -42,8 +41,6 @@ export const TrackedItems: FC<ITrackedItemProps> = ({
                 <Tooltip placement="left" title={createComents} mouseEnterDelay={1.5}>
                     <BsFillChatSquareQuoteFill color='green' style={{ margin: '0px 8px' }} />
                 </Tooltip>
-                <br />
-                <CiEdit color='blue' onClick={() => console.log("got clicked")} style={{ margin: '0px 8px' }} />
             </div>
         </div>
     )

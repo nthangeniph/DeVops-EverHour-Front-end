@@ -78,7 +78,7 @@ const DragDrop=()=>{
     return (
         <div>
            <ResolvedIsland ResolvedItems={ResolvedItems} />
-            <div style={{height:'500px',overflow:'scroll'}}>
+            <div style={{height:'500px'}}>
             <EverHourHub/> 
             </div>
            
