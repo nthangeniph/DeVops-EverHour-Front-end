@@ -1,13 +1,10 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import style from './style.module.scss';
 import { FaProjectDiagram } from "react-icons/fa";
 import 'antd/dist/antd.css';
-import { IRecentTaskProps, ITimeSlot } from '../../../models';
+import { IRecentTaskProps } from '../../../models';
 import { convertSecondsToHours, getDaysMonth } from '../utilis';
-import { DropSlot } from '../../DropSlot';
-import { IItemProps } from '../../item';
 import { WorkItemTypes } from '../../../enums';
-import { GetWorkItemType } from '../../ResolvedIsland/Workitem/utilis';
 import { TrackedItems } from './TrackedItems';
 
 
@@ -23,14 +20,9 @@ export interface IResolvedProps{
 
 export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes, id,totalTime, week ,setIsEditing}) => {
 
-    const [activeColumn,setActiveColumn]=useState<string>();
     const [resolvedItem,setResolvedItem]=useState<IResolvedProps>();
 
 
-
-    useEffect(()=>{
-       if(resolvedItem?.details) setActiveColumn('');
-    },[resolvedItem])
 
     const weekdays = getDaysMonth(week.from, week.to);
 
@@ -44,7 +36,6 @@ export const RecentTask: FC<IRecentTaskProps> = ({ name, projectName, taskTimes,
           setIsEditing(true);
      }
 
-    console.log("active id ::",resolvedItem)
     return (
         <div className={style.everHourContainer}>
             <div className={style.RecentTask}>

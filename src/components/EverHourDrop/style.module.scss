@@ -9,9 +9,12 @@
     flex-wrap: wrap;
     color: black;
     border: solid 2px #32527b;
-    overflow-y: scroll;
+    overflow-y: hidden;
     position: relative;
 
+}
+.Board:hover{
+    overflow-y: scroll;
 }
 .addEdit{
     width: 87%;

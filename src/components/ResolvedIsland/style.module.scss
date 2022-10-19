@@ -8,5 +8,10 @@
     flex-wrap: wrap;
     color: black;
     border: solid 2px #32527b;
-    overflow-y: scroll;
+    scrollbar-width: none !important;
+    overflow-y: hidden;
+
+}
+.container:hover{
+    overflow-y: auto
 }
