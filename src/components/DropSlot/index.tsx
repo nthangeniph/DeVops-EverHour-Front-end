@@ -1,9 +1,12 @@
-import { DatePicker, Form, Input, InputNumber, Mentions, Select } from "antd";
+import { Button, DatePicker, Form, Input, InputNumber, Mentions, Select } from "antd";
 import React, { FC, useState } from "react";
 import { FaProjectDiagram } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
 import { MdWorkOutline } from "react-icons/md";
 import { BiTimer } from "react-icons/bi";
+import { SlClose } from "react-icons/sl";
+import { BsClipboardPlus } from "react-icons/bs";
+import { FaCheckCircle } from "react-icons/fa";
 import { useDrop } from "react-dnd";
 import { IResolvedProps } from "../EverHourDrop/Recenttask";
 import { IItemProps } from "../item";
@@ -59,7 +62,6 @@ export const DropSlot: FC<IDropProps> = ({ resolvedItem, setResolvedItem }) => {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         initialValues={{ size: 200 }}
-        style={{ padding: "1rem" }}
       >
         <Form.Item
           label={
@@ -122,6 +124,11 @@ export const DropSlot: FC<IDropProps> = ({ resolvedItem, setResolvedItem }) => {
           />
         </Form.Item>
       </Form>
+      <div className={style.editButtons}>
+        <Button  className={style.buttons}><SlClose color='red' /><span style={{margin:'2px',color:'red'}}>Close</span></Button>
+        <Button className={style.buttons} > <BsClipboardPlus color='blue' /><span style={{margin:'2px',color:'blue'}}>Next</span></Button>
+        <Button className={style.buttons}><FaCheckCircle color='green' /><span style={{margin:'2px', color:'green'}}> Done</span></Button>
+      </div>
     </div>
   );
 };
