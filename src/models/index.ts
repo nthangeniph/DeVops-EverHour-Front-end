@@ -18,5 +18,6 @@ export interface IRecentTaskProps {
     week?:IWeek;
     taskTimes?: Array<ITimeSlot>;
     totalTime?:number;
+    handleDoubleClick?:(data:ITimeSlot)=>void;
     setIsEditing?:(value:boolean)=>void;
 }

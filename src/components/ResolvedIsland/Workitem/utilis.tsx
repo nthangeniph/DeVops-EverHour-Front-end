@@ -9,16 +9,16 @@ import { WorkItemTypes } from '../../../enums';
 
 
 
-const GetWorkItemType=(type?:WorkItemTypes)=>{
+const GetWorkItemType=(type?:WorkItemTypes,size=20)=>{
     switch(type){
         case WorkItemTypes.Bug:
-            return <BsBugFill style={{color:'red' ,margin:'auto 5px',maxWidth:'20%'}}/>
+            return <BsBugFill size={size} style={{color:'red' ,margin:'auto 5px',maxWidth:'20%'}}/>
         case WorkItemTypes.User_Story:
-            return  <GiOpenBook color='#89CFF0'  style={{margin:'auto 5px',maxWidth:'20%',height:'35px'}} />
+            return  <GiOpenBook color='#89CFF0' size={size}  style={{margin:'auto 5px',maxWidth:'20%',height:'35px'}} />
         case WorkItemTypes.Task:
-            return <BiTask  color='gold'  style={{margin:'auto 5px',maxWidth:'20%',height:'35px'}} />
+            return <BiTask  color='gold' size={size} style={{margin:'auto 5px',maxWidth:'20%',height:'35px'}} />
         case WorkItemTypes.Feature:
-            return <ImTrophy color='purple'  style={{margin:'auto 5px',maxWidth:'20%',height:'35px'}} />
+            return <ImTrophy color='purple' size={size}  style={{margin:'auto 5px',maxWidth:'20%',height:'35px'}} />
         default:
             console.log("Work item not found")
     }

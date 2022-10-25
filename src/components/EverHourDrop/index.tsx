@@ -6,20 +6,41 @@ import style from './style.module.scss'
 import { Collapse } from 'antd';
 import { getWeekHeader } from './utilis';
 import { DropSlot } from '../DropSlot';
+import { IItemProps } from '../item';
+import { ITimeSlot } from '../../models';
 
 
 const { Panel } = Collapse;
 
+export interface IDevOpInfo{
+  id?: string;
+  type?: string;
+  tracked?: boolean;
+}
+
 export const EverHourHub: FC<any> = ({ }) => {
-  const [resolvedItem,setResolvedItem]=useState<IResolvedProps>();
+  const [resolvedItem,setResolvedItem]=useState<IResolvedProps[]>([]);
+  const [devOpsUpdate,setDeVOpsUpdate]=useState<IDevOpInfo[]>([])
   const [isEditingMode,setIsEditing]=useState<boolean>(false);
+  const [slot, setSlot]=useState<ITimeSlot>({});
 
 
-  useEffect(()=>{
-   if(resolvedItem?.id){
-    setIsEditing(prev=>!prev)
-   }
-  },[resolvedItem?.details])
+
+  const handleDoubleClick=(data:ITimeSlot)=>{
+    console.log("Drop item ::",data)
+    let workItems = data?.comment?.split(',')?.map(tsk => {
+      let length = tsk.length - 6;
+      return ({id: tsk.substring(length,length-1),
+              type: tsk.substring(length-2,length+3),
+              tracked:true
+              })
+    })
+
+      setDeVOpsUpdate(()=>workItems)
+      setSlot(()=>data)
+      setIsEditing(true);
+ }
+
 
 
   return (
@@ -27,6 +48,7 @@ export const EverHourHub: FC<any> = ({ }) => {
       <div className={style.Board} >
         <Collapse defaultActiveKey={['1']} style={{ width: '100%' }} bordered={true} >
           {timeSheet.map((weekTask, index) => {
+  
             return (
               <Panel header={getWeekHeader(weekTask.week.from, weekTask.week.to)} key={index + 1} className={style.custom} >
                 <EverHourHeader week={weekTask.week} />
@@ -38,6 +60,7 @@ export const EverHourHub: FC<any> = ({ }) => {
                   projectName={task.projectName}
                   totalTime={task.totalTime}
                   week={weekTask.week} 
+                  handleDoubleClick={handleDoubleClick}
                   setIsEditing={setIsEditing}/>
                 ))}
               </Panel>
@@ -48,7 +71,14 @@ export const EverHourHub: FC<any> = ({ }) => {
       {isEditingMode && (
         <div className={style.addEdit}>
           <div className={style.dropIsland}>
-         <DropSlot setResolvedItem={setResolvedItem}/>
+         <DropSlot 
+              setIsEditing={setIsEditing} 
+              setResolvedItem={setResolvedItem} 
+              setSlot={setSlot}
+              slot={slot}
+              resolvedItem={resolvedItem} 
+              devOpsUpdate={devOpsUpdate} 
+              setDeVOpsUpdate={setDeVOpsUpdate}/>
           </div>
         </div>
         )}

@@ -6,59 +6,59 @@ import { ResolvedIsland } from './ResolvedIsland';
 
 const ResolvedItems=[
     {
-        id:'8355',
+        id:'83550',
         details:'send appeals back to POS',
         type:WorkItemTypes.Bug
     },
     {
-        id:'8333325',
+        id:'83315',
         details:'When adding a new school, including schooling gender',
         type:WorkItemTypes.User_Story
     },
     {
-        id:'837543',
+        id:'87543',
         details:'Add Export Button On The Inspection Assignment Details View',
         type:WorkItemTypes.User_Story
     },
     {
-        id:'868855',
+        id:'84855',
         details:'API: Clean-up unused Properties and columns especially on SchoolApplication',
         type:WorkItemTypes.Feature
     },
     {
-        id:'83155',
+        id:'83165',
         details:'Confirmation for Invite to Interview has some words missing',
         type:WorkItemTypes.Task
 
     },
     {
-        id:'833005',
+        id:'83105',
         details:'API: Enforce controls when registering a new Learner and Parent',
         type:WorkItemTypes.Bug
     },
     {
-        id:'8775',
+        id:'87705',
         details:'DevOps Resoved',
         type:WorkItemTypes.Task
     },
     {
-        id:'8255',
+        id:'82565',
         details:'Lungile N Resoved',
         type:WorkItemTypes.Feature
     },
     {
-        id:'868855',
+        id:'46855',
         details:'API: Clean-up unused Properties and columns especially on SchoolApplication',
         type:WorkItemTypes.User_Story
     },
     {
-        id:'83155',
+        id:'81155',
         details:'Confirmation for Invite to Interview has some words missing',
         type:WorkItemTypes.Task
 
     },
     {
-        id:'833005',
+        id:'83105',
         details:'API: Enforce controls when registering a new Learner and Parent',
         type:WorkItemTypes.Bug
     },

@@ -1,9 +1,11 @@
+import { WorkItemTypes } from "../../enums";
+
 const getDaysMonthArray = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/");
         arr.push({
-            day: parseInt(date[0]),
-            month: parseInt(date[1])
+            day: parseInt(date[1]),
+            month: parseInt(date[0])
         });
     }
     return arr;
@@ -12,15 +14,20 @@ const getDaysMonthArray = (start: any, end: any) => {
 const getDaysMonth = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/").reverse().join('-');
-        arr.push(date);
+       let tempDate=date.split('-').map(dt=>{
+            return dt.length>1?dt:`0${dt}`
+        });
+
+        arr.push(`${tempDate[0]}-${tempDate[2]}-${tempDate[1]}`);
     }
+  
     return arr;
 };
 
 const getWeekHeader = (start: any, end: any) => {
     let startDate = new Date(start).toLocaleDateString().split('/');
-    let endDate = new Date(end).toLocaleDateString().split('/')
-    return `${getMonth(parseInt(startDate[1]))} ${startDate[0]} -- ${getMonth(parseInt(endDate[1]))} ${endDate[0]}`
+    let endDate = new Date(end).toLocaleDateString().split('/');
+    return `${getMonth(parseInt(startDate[0]))} ${startDate[1]} -- ${getMonth(parseInt(endDate[0]))} ${endDate[1]}`
 }
 
 
@@ -70,9 +77,39 @@ const convertSecondsToHours = (time: number, toSeconds = false) => {
 
 }
 
+function getWorkTypes(x: string) {
+    switch (x) {
+        case 'bg':
+            return WorkItemTypes.Bug;
+        case 'us':
+            return WorkItemTypes.User_Story;
+        case 'ft':
+            return WorkItemTypes.Feature;
+        case 'ts':
+            return WorkItemTypes.Task;
+        default:
+            return WorkItemTypes.Bug;;
+    }
+}
+function getWorkTypeSymbol(x: WorkItemTypes) {
+    switch (x) {
+        case WorkItemTypes.Bug:
+            return 'bg';
+        case WorkItemTypes.User_Story:
+            return 'us';
+        case WorkItemTypes.Feature:
+            return 'ft';
+        case WorkItemTypes.Task:
+            return 'ts' ;
+        default:
+            return 'bg';
+    }
+}
 
 
 
 
 
-export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours, getWeekHeader }
+
+
+export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours, getWeekHeader,getWorkTypes,getWorkTypeSymbol }
