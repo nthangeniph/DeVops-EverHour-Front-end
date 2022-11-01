@@ -1,12 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { EverHourHeader } from './EverHourHeader';
 import { IResolvedProps, RecentTask } from './Recenttask';
 import timeSheet from '../timesheet.json';
 import style from './style.module.scss'
 import { Collapse } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
 import { getWeekHeader } from './utilis';
 import { DropSlot } from '../DropSlot';
-import { IItemProps } from '../item';
 import { ITimeSlot } from '../../models';
 
 
@@ -22,7 +22,7 @@ export const EverHourHub: FC<any> = ({ }) => {
   const [resolvedItem,setResolvedItem]=useState<IResolvedProps[]>([]);
   const [devOpsUpdate,setDeVOpsUpdate]=useState<IDevOpInfo[]>([])
   const [isEditingMode,setIsEditing]=useState<boolean>(false);
-  const [slot, setSlot]=useState<ITimeSlot>({});
+  const [slot, setSlot]=useState<ITimeSlot>();
 
 
 
@@ -42,7 +42,7 @@ export const EverHourHub: FC<any> = ({ }) => {
  }
 
 
-
+ console.log("rendering");
   return (
     <div className={style.outCover}>
       <div className={style.Board} >
@@ -54,6 +54,7 @@ export const EverHourHub: FC<any> = ({ }) => {
                 <EverHourHeader week={weekTask.week} />
 
                 {weekTask.result.map(task => (<RecentTask
+                  key={uuidv4()}
                   name={task.name}
                   taskTimes={task.taskTimes}
                   id={task?.id}

@@ -3,9 +3,10 @@ import { IItemProps } from '../item';
 import Style from './style.module.scss';
 import { WorkItem } from './Workitem';
 import { SiAzuredevops } from "react-icons/si";
+import { IWorkItem } from '../../providers/devOps/contexts';
 
 interface IResolvedPROPs {
-    ResolvedItems: Array<IItemProps>,
+    ResolvedItems: Array<IWorkItem>,
 }
 
 const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
@@ -18,10 +19,10 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
             </div>
             <div className={Style.container}>
                 {
-                    ResolvedItems.map(({ details, id, type }) => {
+                    ResolvedItems?.map(({ title,workItemType,id, }) => {
                         return (
                             <>
-                                <WorkItem id={id} details={details} key={id} type={type} />
+                                <WorkItem id={id} details={title} key={id} type={workItemType as any} />
                             </>
                         )
                     }

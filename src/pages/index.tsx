@@ -2,12 +2,16 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 import DragDrop from '../components/DragDrop'
 import styles from '../styles/Home.module.css'
+import { useEffect } from 'react';
 
 const Home: NextPage = () => {
+
   return (
     <div className={styles.container}>
+
+     <DragDrop/>
+
      
-      <DragDrop/>
         
       
 
