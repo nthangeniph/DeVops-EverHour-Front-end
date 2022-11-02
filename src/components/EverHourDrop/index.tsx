@@ -1,13 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { EverHourHeader } from './EverHourHeader';
 import { IResolvedProps, RecentTask } from './Recenttask';
-import timeSheet from '../timesheet.json';
+// import timeSheet from '../timesheet.json';
 import style from './style.module.scss'
 import { Collapse } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import { getWeekHeader } from './utilis';
 import { DropSlot } from '../DropSlot';
 import { ITimeSlot } from '../../models';
+import { useEverHour } from '../../providers/everHour';
 
 
 const { Panel } = Collapse;
@@ -23,6 +24,11 @@ export const EverHourHub: FC<any> = ({ }) => {
   const [devOpsUpdate,setDeVOpsUpdate]=useState<IDevOpInfo[]>([])
   const [isEditingMode,setIsEditing]=useState<boolean>(false);
   const [slot, setSlot]=useState<ITimeSlot>();
+  const {getWeekTasks,weekTask}=useEverHour();
+
+  useEffect(()=>{
+          getWeekTasks({week:'38'})
+  },[])
 
 
 
@@ -42,18 +48,17 @@ export const EverHourHub: FC<any> = ({ }) => {
  }
 
 
- console.log("rendering");
   return (
     <div className={style.outCover}>
       <div className={style.Board} >
         <Collapse defaultActiveKey={['1']} style={{ width: '100%' }} bordered={true} >
-          {timeSheet.map((weekTask, index) => {
+          {/* {timeSheet.map((weekTask, index) => { */}
   
             return (
-              <Panel header={getWeekHeader(weekTask.week.from, weekTask.week.to)} key={index + 1} className={style.custom} >
-                <EverHourHeader week={weekTask.week} />
+              <Panel header={getWeekHeader(weekTask?.week?.from, weekTask?.week?.to)||''} key={ 1} className={style.custom} >
+                <EverHourHeader week={weekTask?.week} />
 
-                {weekTask.result.map(task => (<RecentTask
+                {weekTask?.weekTasks?.map(task => (<RecentTask
                   key={uuidv4()}
                   name={task.name}
                   taskTimes={task.taskTimes}
@@ -66,7 +71,7 @@ export const EverHourHub: FC<any> = ({ }) => {
                 ))}
               </Panel>
             )
-          })}
+         {/* // })} */}
         </Collapse>
       </div>
       {isEditingMode && (

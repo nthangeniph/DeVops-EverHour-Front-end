@@ -36,19 +36,22 @@ export interface IWorkItem{
     timeEstimate?:number;
 
 }
+export interface IUpdateItems{
+  updateWorkItems?:IUpdateItem[]
+}
  export interface IDevOpStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
         workItems?:Array<IWorkItem>;
-        updateWorkItems?:Array<IUpdateItem>;
+        updateWorkItems?:IUpdateItems;
         errorMessage?:string;
   }
 
   export interface IDevOpActionsContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
      getWorkItems?:()=>void;
-     updateWorkItems?:(items:Array<IUpdateItem>)=>void;
+     updateWorkItems:(items:IUpdateItems)=>void;
      refreshWorkItems?:(items:Array<IWorkItem>)=>void;
-     refreshUpdateItems?:(items:Array<IUpdateItem>)=>void;
+     refreshUpdateItems?:(items:IUpdateItems)=>void;
   }
 
   

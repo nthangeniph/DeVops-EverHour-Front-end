@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { IItemProps } from '../item';
 import Style from './style.module.scss';
 import { WorkItem } from './Workitem';
 import { SiAzuredevops } from "react-icons/si";

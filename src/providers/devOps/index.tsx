@@ -1,9 +1,8 @@
-import { message } from 'antd';
 import React, { FC, useReducer, useContext, useEffect, PropsWithChildren } from 'react';
 import { useMutate } from 'restful-react';
 import { getFlagSetters } from '../utils/flagsSetters';
 import { getWorkItemsAction, getWorkItemsErrorAction, getWorkItemsSuccessAction, updateWorkItemsAction, updateWorkItemsErrorAction, updateWorkItemsSuccessAction } from './actions';
-import { DevOpsActionsContext, DevOpsStateContext, IUpdateItem, IWorkItem } from './contexts';
+import { DevOpsActionsContext, DevOpsStateContext, IUpdateItem, IUpdateItems, IWorkItem } from './contexts';
 import { devOpsReducer } from './reducer';
 
 
@@ -28,7 +27,7 @@ const DevOpsProvider:FC<PropsWithChildren<any>> = ({ children }) => {
             dispatch(getWorkItemsErrorAction(error))
     })
     }
-    const updateWorkItems=(payload:Array<IUpdateItem>)=>{
+    const updateWorkItems=(payload:IUpdateItems)=>{
         dispatch((updateWorkItemsAction()))
         updateWorkItemsHttp({
             workItems:payload
@@ -44,7 +43,7 @@ const DevOpsProvider:FC<PropsWithChildren<any>> = ({ children }) => {
     const refreshWorkItems=(payload:Array<IWorkItem>)=>{
         dispatch(getWorkItemsSuccessAction(payload))
     }
-    const refreshUpdateItems=(payload:Array<IUpdateItem>)=>{
+    const refreshUpdateItems=(payload:IUpdateItems)=>{
         dispatch(updateWorkItemsSuccessAction(payload))
     }
     return(
@@ -69,7 +68,7 @@ const DevOpsProvider:FC<PropsWithChildren<any>> = ({ children }) => {
 function useDevOpsState() {
     const context = useContext(DevOpsStateContext);
     if (!context) {
-      throw new Error('useAuthState must be used within a AuthProvider');
+      throw new Error('useDevOpsState must be used within a DevOpsProvider');
     }
     return context;
   }
@@ -77,7 +76,7 @@ function useDevOpsState() {
   function useDevOpsActions() {
     const context = useContext(DevOpsActionsContext);
     if (context === undefined) {
-      throw new Error('useAuthActions must be used within a AuthProvider');
+      throw new Error('useDevOpsActions must be used within a DevOpsProvider');
     }
     return context;
   }

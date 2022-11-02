@@ -6,6 +6,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { RestfulProvider } from "restful-react";
 import { BASE_URL } from "../api/utils/constants";
 import { DevOpsProvider } from "../providers/devOps";
+import { EverHourProvider } from "../providers/everHour";
 
 interface IState {
   headers: { [key: string]: string };
@@ -52,12 +53,14 @@ class Main extends App<{}, {}, IState> {
       //@ts-ignore
       <RestfulProvider
         base={BASE_URL}
-        requestOptions={{ headers: {authorization:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTI2YjRiZDU3YTQ4NDU0OTFmODMzNSIsInVzZXJuYW1lIjoiTnRoYW5nZW5pcGhAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2NzI5NDg5MiwiZXhwIjoxNjY3MzMwODkyfQ.1WxK_Usc2tHbnbjrcI7IOoyfibBeLFPHZV3MoJcokQE'} }}
+        requestOptions={{ headers: {authorization:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTI2YjRiZDU3YTQ4NDU0OTFmODMzNSIsInVzZXJuYW1lIjoiTnRoYW5nZW5pcGhAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2NzM2NzkwMSwiZXhwIjoxNjY3NDAzOTAxfQ.tfVC6Crw81g2IYMrUDH25__JDdzLMy3bgbL8JK22xGY'} }}
       >
         <DevOpsProvider>
+          <EverHourProvider>
         <DndProvider backend={HTML5Backend}>
           <Component {...pageProps} {...(router?.query || {})} />
         </DndProvider>
+        </EverHourProvider>
         </DevOpsProvider>
       </RestfulProvider>
     );

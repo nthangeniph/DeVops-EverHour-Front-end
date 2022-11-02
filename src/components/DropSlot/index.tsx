@@ -7,7 +7,7 @@ import {
   Select,
   Tooltip,
 } from "antd";
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { FaProjectDiagram } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
 import { MdWorkOutline } from "react-icons/md";
@@ -27,7 +27,8 @@ import { IDevOpInfo } from "../EverHourDrop";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { GetWorkItemType } from "../ResolvedIsland/Workitem/utilis";
-import { useDevOps } from "../../providers/devOps";
+import { useDevOps, useDevOpsActions } from "../../providers/devOps";
+import { IUpdateItem, IUpdateItems } from "../../providers/devOps/contexts";
 
 export interface IDropProps {
   setResolvedItem?: (value: IResolvedProps[]) => void;
@@ -52,7 +53,18 @@ export const DropSlot: FC<IDropProps> = ({
   slot,
 }) => {
   const [initialSlot, setInitialSlot] = useState<ITimeSlot>(slot);
-  const {workItems:ResolvedItems}=useDevOps();
+  const {workItems:ResolvedItems,isInProgress}=useDevOps();
+  const {updateWorkItems,refreshWorkItems}=useDevOpsActions()
+
+
+
+  useEffect(()=>{
+  if(resolvedItem?.length){
+    const filterResolvedItems=ResolvedItems.filter(({id})=>(!resolveItemsId?.includes(id.toString())))
+   
+    refreshWorkItems(filterResolvedItems)
+  }
+  },[resolvedItem])
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "item",
     drop: ({ details, type, id }: IItemProps) => {
@@ -120,11 +132,22 @@ export const DropSlot: FC<IDropProps> = ({
         .join("|"),
     }));
   };
+  const handleDone=()=>{
+    const newUpdateItem=(((resolveItemsId.map(id=>({
+      id:parseInt(id),
+      tracked: true
+       }) 
+       ) )as IUpdateItems));
+  
+    updateWorkItems(newUpdateItem)
+    setInitialSlot({});
+    setIsEditing(false)
+  }
   const handleClose=()=>{
     setInitialSlot({});
     setIsEditing(false)
   }
-  console.log("selected items:", resolveItemsId);
+  console.log("selected items:", ResolvedItems);
   return (
     <div className={style.editForm}>
       <div
@@ -261,12 +284,13 @@ export const DropSlot: FC<IDropProps> = ({
         </Button>
         <Button
           className={style.buttons}
-          style={{ backgroundColor: "#009444" }}
+          style={{ backgroundColor: resolveItemsId?.length?"#009444":'gray' }}
+          disabled={!resolveItemsId?.length ||isInProgress?.updateWorkItems}
         >
           <FaCheckCircle color="white" />
           <span
             style={{ margin: "2px", color: "white" }}
-            onClick={() => setIsEditing(false)}
+            onClick={() => handleDone()}
           >
             {" "}
             Done

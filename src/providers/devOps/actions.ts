@@ -1,5 +1,5 @@
 import { createAction } from "redux-actions";
-import { IDevOpStateContext, IUpdateItem, IWorkItem } from "./contexts";
+import { IDevOpStateContext, IUpdateItems, IWorkItem } from "./contexts";
 
 export enum DevOpsActionEnums {
     //#getworkitems region
@@ -21,5 +21,5 @@ export enum DevOpsActionEnums {
   export const getWorkItemsErrorAction = createAction<IDevOpStateContext,string>(DevOpsActionEnums.GetWorkItemsRequest, (errorMessage) => ({errorMessage}));
 
   export const updateWorkItemsAction = createAction<IDevOpStateContext>(DevOpsActionEnums.UpdateWorkItemsRequest, () => ({}));
-  export const updateWorkItemsSuccessAction = createAction<IDevOpStateContext,Array<IUpdateItem>>(DevOpsActionEnums.UpdateWorkItemsSuccess, (updateWorkItems) => ({updateWorkItems}));
+  export const updateWorkItemsSuccessAction = createAction<IDevOpStateContext,IUpdateItems>(DevOpsActionEnums.UpdateWorkItemsSuccess, (updateWorkItems) => ({updateWorkItems}));
   export const updateWorkItemsErrorAction = createAction<IDevOpStateContext,string>(DevOpsActionEnums.UpdateWorkItemsError, (errorMessage) => ({errorMessage}));

@@ -15,6 +15,8 @@ export function devOpsReducer(
   switch (type) {
     case DevOpsActionEnums.GetWorkItemsRequest:
     case DevOpsActionEnums.GetWorkItemsSuccess:
+
+    
         return {
             ...state,isInProgress:{getWorkItems:false},
             ...payload,
