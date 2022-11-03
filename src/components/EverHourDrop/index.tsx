@@ -1,94 +1,137 @@
-import React, { FC, useEffect, useState } from 'react';
-import { EverHourHeader } from './EverHourHeader';
-import { IResolvedProps, RecentTask } from './Recenttask';
-// import timeSheet from '../timesheet.json';
-import style from './style.module.scss'
-import { Collapse } from 'antd';
-import { v4 as uuidv4 } from 'uuid';
-import { getWeekHeader } from './utilis';
-import { DropSlot } from '../DropSlot';
-import { ITimeSlot } from '../../models';
-import { useEverHour } from '../../providers/everHour';
-
+import React, { FC, useEffect, useRef, useState } from "react";
+import { EverHourHeader } from "./EverHourHeader";
+import { IResolvedProps, RecentTask } from "./Recenttask";
+import style from "./style.module.scss";
+import { TfiTimer } from "react-icons/tfi";
+import { Collapse } from "antd";
+import { v4 as uuidv4 } from "uuid";
+import ReactLoading from "react-loading";
+import { getWeekHeader } from "./utilis";
+import { DropSlot } from "../DropSlot";
+import { ITimeSlot } from "../../models";
+import { useEverHour } from "../../providers/everHour";
 
 const { Panel } = Collapse;
 
-export interface IDevOpInfo{
+export interface IDevOpInfo {
   id?: string;
   type?: string;
   tracked?: boolean;
 }
 
-export const EverHourHub: FC<any> = ({ }) => {
-  const [resolvedItem,setResolvedItem]=useState<IResolvedProps[]>([]);
-  const [devOpsUpdate,setDeVOpsUpdate]=useState<IDevOpInfo[]>([])
-  const [isEditingMode,setIsEditing]=useState<boolean>(false);
-  const [slot, setSlot]=useState<ITimeSlot>();
-  const {getWeekTasks,weekTask}=useEverHour();
+export const EverHourHub: FC<any> = ({}) => {
+  const [resolvedItem, setResolvedItem] = useState<IResolvedProps[]>([]);
+  const [devOpsUpdate, setDeVOpsUpdate] = useState<IDevOpInfo[]>([]);
+  const [isEditingMode, setIsEditing] = useState<boolean>(false);
+  const [slot, setSlot] = useState<ITimeSlot>();
+  const [limit, setLimit] = useState<number>(5);
+  const dataFetchedRef = useRef(false);
+  const { getWeekTasks, timeSheets } = useEverHour();
 
-  useEffect(()=>{
-          getWeekTasks({week:'38'})
-  },[])
+  useEffect(() => {
+    if (limit) {
+      if (dataFetchedRef.current) return;
+      dataFetchedRef.current = true;
+      getWeekTasks({ limit: limit.toString() });
+    }
+  }, [limit]);
 
-
-
-  const handleDoubleClick=(data:ITimeSlot)=>{
-    console.log("Drop item ::",data)
-    let workItems = data?.comment?.split(',')?.map(tsk => {
+  const handleDoubleClick = (data: ITimeSlot) => {
+    let workItems = data?.comment?.split("|")?.map((tsk) => {
       let length = tsk.length - 6;
-      return ({id: tsk.substring(length,length-1),
-              type: tsk.substring(length-2,length+3),
-              tracked:true
-              })
-    })
+      return {
+        id: tsk.substring(length, length - 1),
+        type: tsk.substring(length - 2, length + 3),
+        tracked: true,
+      };
+    });
 
-      setDeVOpsUpdate(()=>workItems)
-      setSlot(()=>data)
-      setIsEditing(true);
- }
-
+    setDeVOpsUpdate(() => workItems);
+    setSlot(() => data);
+    setIsEditing(true);
+  };
 
   return (
     <div className={style.outCover}>
-      <div className={style.Board} >
-        <Collapse defaultActiveKey={['1']} style={{ width: '100%' }} bordered={true} >
-          {/* {timeSheet.map((weekTask, index) => { */}
-  
-            return (
-              <Panel header={getWeekHeader(weekTask?.week?.from, weekTask?.week?.to)||''} key={ 1} className={style.custom} >
-                <EverHourHeader week={weekTask?.week} />
+      {timeSheets?.length ? (
+        <div className={style.Board}>
+          <Collapse
+            defaultActiveKey={["1"]}
+            style={{ width: "100%" }}
+            bordered={true}
+          >
+            {timeSheets.map(({ weekTasks, week }, index) => {
+               let weekTotal=weekTasks.reduce((totalWeek, { totalTime }) => {
+                console.log("time::", totalTime, totalWeek);
+                return totalWeek + totalTime;
+              }, 0);
+          
 
-                {weekTask?.weekTasks?.map(task => (<RecentTask
-                  key={uuidv4()}
-                  name={task.name}
-                  taskTimes={task.taskTimes}
-                  id={task?.id}
-                  projectName={task.projectName}
-                  totalTime={task.totalTime}
-                  week={weekTask.week} 
-                  handleDoubleClick={handleDoubleClick}
-                  setIsEditing={setIsEditing}/>
-                ))}
-              </Panel>
-            )
-         {/* // })} */}
-        </Collapse>
-      </div>
+              return (
+                <Panel
+                  header={
+                    <div className={style.weekHeader}>
+                      <h2>{getWeekHeader(week.from, week.to)}</h2>
+                      <div style={{display:'flex'}}>
+                      <TfiTimer/>
+                      <h2>{weekTotal / 3600}</h2></div>
+                    </div>
+                  }
+                  key={index + 1}
+                  className={style.custom}
+                >
+                  <EverHourHeader week={week} />
+
+                  {weekTasks?.map((task) =>{
+                         weekTotal =+task.totalTime 
+                    return(
+                    <RecentTask
+                      key={uuidv4()}
+                      name={task.name}
+                      taskTimes={task.taskTimes}
+                      id={task?.id}
+                      projectName={task.projectName}
+                      totalTime={task.totalTime}
+                      week={week}
+                      handleDoubleClick={handleDoubleClick}
+                      setIsEditing={setIsEditing}
+                    />
+                  )
+                    })
+            }
+                </Panel>
+              );
+            })}
+          </Collapse>
+        </div>
+      ) : (
+        <div className={style.loading}>
+          <div>
+            <ReactLoading
+              className={style.loaderIcon}
+              type={"bars"}
+              color="#AFE1AF	"
+              width={"45%"}
+            />
+            <h3 style={{ margin: "auto" }}>EverHour Data Loading </h3>
+          </div>
+        </div>
+      )}
       {isEditingMode && (
         <div className={style.addEdit}>
           <div className={style.dropIsland}>
-         <DropSlot 
-              setIsEditing={setIsEditing} 
-              setResolvedItem={setResolvedItem} 
+            <DropSlot
+              setIsEditing={setIsEditing}
+              setResolvedItem={setResolvedItem}
               setSlot={setSlot}
               slot={slot}
-              resolvedItem={resolvedItem} 
-              devOpsUpdate={devOpsUpdate} 
-              setDeVOpsUpdate={setDeVOpsUpdate}/>
+              resolvedItem={resolvedItem}
+              devOpsUpdate={devOpsUpdate}
+              setDeVOpsUpdate={setDeVOpsUpdate}
+            />
           </div>
         </div>
-        )}
+      )}
     </div>
-
-  )
-}
+  );
+};

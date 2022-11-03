@@ -12,9 +12,9 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
 
     return (
         <>
-            <div style={{ height: '20px', width: '25%', color: 'black', margin: '3px auto', display: 'flex', justifyContent: 'center' }}>
-                <SiAzuredevops color='#77CCFF' style={{ margin: 'auto 10px' }} />
-                <span style={{ margin: 'auto 0px' }}>DevOps Resolved Island</span>
+            <div style={{ height: '20px', width: '25%', color: 'black', margin: '25px auto', display: 'flex', justifyContent: 'center' }}>
+                <SiAzuredevops color='#77CCFF'style={{ margin: '14px 5px' }} />
+                <span style={{ margin: '10px 0px' }}>DevOps Resolved Island</span>
             </div>
             <div className={Style.container}>
                 {

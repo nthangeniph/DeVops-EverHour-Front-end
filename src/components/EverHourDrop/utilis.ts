@@ -87,8 +87,7 @@ function getWorkTypes(x: string) {
             return WorkItemTypes.Feature;
         case 'ts':
             return WorkItemTypes.Task;
-        default:
-            return WorkItemTypes.Bug;;
+      
     }
 }
 function getWorkTypeSymbol(x: WorkItemTypes) {

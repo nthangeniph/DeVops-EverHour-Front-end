@@ -12,7 +12,27 @@
         display: none;
   
     }
+    .manualTime{
+        display: block;
+        width: 20%;
+        margin: auto;
+        .timeText{
+            margin: 0px 8px;
+            font-weight: bold;
+            color: #C4B454;
+
+        }
+        
+    }
+ 
   
+}
+.everHourManualTime{
+    display: block;
+    width: 20%;
+    margin: auto;
+    font-weight: bold;
+    color: rgb(81, 74, 74);
 }
 
 .cover:hover {
@@ -20,5 +40,8 @@
     display: block;
     width: 20%;
     margin: 8% auto;
+    }
+    .manualTime{
+        display: none;
     }
 }

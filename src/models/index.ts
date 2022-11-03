@@ -5,7 +5,7 @@ export interface IWeek{
 
 }
 export interface ITimeSlot{
-    id?:string;
+    taskId?:string;
     date?:string;
     manualTime?:number;
     comment?:string;

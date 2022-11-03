@@ -53,14 +53,19 @@ class Main extends App<{}, {}, IState> {
       //@ts-ignore
       <RestfulProvider
         base={BASE_URL}
-        requestOptions={{ headers: {authorization:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTI2YjRiZDU3YTQ4NDU0OTFmODMzNSIsInVzZXJuYW1lIjoiTnRoYW5nZW5pcGhAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2NzM2NzkwMSwiZXhwIjoxNjY3NDAzOTAxfQ.tfVC6Crw81g2IYMrUDH25__JDdzLMy3bgbL8JK22xGY'} }}
+        requestOptions={{
+          headers: {
+            authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTI2YjRiZDU3YTQ4NDU0OTFmODMzNSIsInVzZXJuYW1lIjoiTnRoYW5nZW5pcGhAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2NzQ2ODQ1OCwiZXhwIjoxNjY3NTA0NDU4fQ.JVB7-xb8fxIw0jYv6d-wxZ0BVRfT8B05d5akgTn3jLo",
+          },
+        }}
       >
         <DevOpsProvider>
           <EverHourProvider>
-        <DndProvider backend={HTML5Backend}>
-          <Component {...pageProps} {...(router?.query || {})} />
-        </DndProvider>
-        </EverHourProvider>
+            <DndProvider backend={HTML5Backend}>
+              <Component {...pageProps} {...(router?.query || {})} />
+            </DndProvider>
+          </EverHourProvider>
         </DevOpsProvider>
       </RestfulProvider>
     );

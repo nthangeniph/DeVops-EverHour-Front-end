@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from "uuid";
 import { GetWorkItemType } from "../ResolvedIsland/Workitem/utilis";
 import { useDevOps, useDevOpsActions } from "../../providers/devOps";
 import { IUpdateItem, IUpdateItems } from "../../providers/devOps/contexts";
+import { useEverHour } from "../../providers/everHour";
 
 export interface IDropProps {
   setResolvedItem?: (value: IResolvedProps[]) => void;
@@ -54,6 +55,7 @@ export const DropSlot: FC<IDropProps> = ({
 }) => {
   const [initialSlot, setInitialSlot] = useState<ITimeSlot>(slot);
   const {workItems:ResolvedItems,isInProgress}=useDevOps();
+  const {updateTask}=useEverHour();
   const {updateWorkItems,refreshWorkItems}=useDevOpsActions()
 
 
@@ -140,6 +142,7 @@ export const DropSlot: FC<IDropProps> = ({
        ) )as IUpdateItems));
   
     updateWorkItems(newUpdateItem)
+    updateTask(initialSlot)
     setInitialSlot({});
     setIsEditing(false)
   }
@@ -219,7 +222,7 @@ export const DropSlot: FC<IDropProps> = ({
           required
           labelCol={{ span: 7 }}
         >
-          <Select defaultValue={initialSlot?.id}>
+          <Select defaultValue={initialSlot?.taskId}>
             {recentTasks.map(({ id, projectName }) => {
               return (
                 <Select.Option value={id} key={id}>
