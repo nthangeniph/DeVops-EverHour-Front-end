@@ -77,6 +77,20 @@ const convertSecondsToHours = (time: number, toSeconds = false) => {
 
 }
 
+
+const timeIndicatorColor=(time:number)=>{
+    const hours=convertSecondsToHours(time);
+    if(hours>10){
+        return 'red'
+    }else if(5<hours && hours<=10){
+        return 'green'
+
+    }else if(hours<5){
+        return 'gray'
+    }else{
+        return 'white'
+    }
+}
 function getWorkTypes(x: string) {
     switch (x) {
         case 'bg':
@@ -111,4 +125,4 @@ function getWorkTypeSymbol(x: WorkItemTypes) {
 
 
 
-export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours, getWeekHeader,getWorkTypes,getWorkTypeSymbol }
+export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours,timeIndicatorColor, getWeekHeader,getWorkTypes,getWorkTypeSymbol }

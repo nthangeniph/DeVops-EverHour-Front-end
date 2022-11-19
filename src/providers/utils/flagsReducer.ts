@@ -26,6 +26,7 @@ const  flagsReducer = <T extends IFlagsState<any, any, any, any> = unknown>(
   state: T = FLAGS_INITIAL_STATE as T,
   { type, payload }: ReduxActions.Action<IFlagsState<any, any, any, any>>
 ) => {
+  
   const flaggable = /(.*)_(REQUEST|SUCCESS|ERROR|ACTION)/.test(type);
 
   if (flaggable) {

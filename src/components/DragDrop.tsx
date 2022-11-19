@@ -31,7 +31,7 @@ const DragDrop=()=>{
             <Spin spinning={isInProgress?.getWorkItems} tip='Fetching Your DevOps Work Items'>
            <ResolvedIsland ResolvedItems={workItems} />
            </Spin>
-            <div style={{height:'500px'}}>
+            <div style={{height:'45rem'}}>
             <EverHourHub/> 
             </div>
            

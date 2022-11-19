@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
 import App from "next/app";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -7,6 +6,8 @@ import { RestfulProvider } from "restful-react";
 import { BASE_URL } from "../api/utils/constants";
 import { DevOpsProvider } from "../providers/devOps";
 import { EverHourProvider } from "../providers/everHour";
+import { AuthProvider } from "../providers/auth";
+import { getToken } from "../utils/auth";
 
 interface IState {
   headers: { [key: string]: string };
@@ -48,6 +49,7 @@ class Main extends App<{}, {}, IState> {
   //demo prepararion donec
   render() {
     const { Component, pageProps, router } = this.props;
+    console.log("found token ::", getToken());
 
     return (
       //@ts-ignore
@@ -55,18 +57,19 @@ class Main extends App<{}, {}, IState> {
         base={BASE_URL}
         requestOptions={{
           headers: {
-            authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTI2YjRiZDU3YTQ4NDU0OTFmODMzNSIsInVzZXJuYW1lIjoiTnRoYW5nZW5pcGhAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2NzQ2ODQ1OCwiZXhwIjoxNjY3NTA0NDU4fQ.JVB7-xb8fxIw0jYv6d-wxZ0BVRfT8B05d5akgTn3jLo",
+            authorization: getToken()?.accessToken,
           },
         }}
       >
-        <DevOpsProvider>
-          <EverHourProvider>
-            <DndProvider backend={HTML5Backend}>
-              <Component {...pageProps} {...(router?.query || {})} />
-            </DndProvider>
-          </EverHourProvider>
-        </DevOpsProvider>
+        <AuthProvider>
+          <DevOpsProvider>
+            <EverHourProvider>
+              <DndProvider backend={HTML5Backend}>
+                <Component {...pageProps} {...(router?.query || {})} />
+              </DndProvider>
+            </EverHourProvider>
+          </DevOpsProvider>
+        </AuthProvider>
       </RestfulProvider>
     );
   }

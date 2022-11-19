@@ -54,22 +54,29 @@ export const DropSlot: FC<IDropProps> = ({
   slot,
 }) => {
   const [initialSlot, setInitialSlot] = useState<ITimeSlot>(slot);
-  const {workItems:ResolvedItems,isInProgress}=useDevOps();
-  const {updateTask}=useEverHour();
-  const {updateWorkItems,refreshWorkItems}=useDevOpsActions()
+  const { workItems: ResolvedItems, isInProgress, projects } = useDevOps();
+  const { updateTask } = useEverHour();
+  const { updateWorkItems, refreshWorkItems } = useDevOpsActions();
 
+  useEffect(() => {
+    if (resolvedItem?.length) {
+      const filterResolvedItems = ResolvedItems.filter(
+        ({ id }) => !resolveItemsId?.includes(id.toString())
+      );
 
+      refreshWorkItems(filterResolvedItems, projects);
+    }
+  }, [resolvedItem]);
 
-  useEffect(()=>{
-  if(resolvedItem?.length){
-    const filterResolvedItems=ResolvedItems.filter(({id})=>(!resolveItemsId?.includes(id.toString())))
-   
-    refreshWorkItems(filterResolvedItems)
-  }
-  },[resolvedItem])
+  const time = useMemo(() => {
+    if (initialSlot?.manualTime > 100) {
+      return initialSlot?.manualTime / 3600;
+    }
+    return initialSlot.manualTime;
+  }, [initialSlot]);
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "item",
-    drop: ({ details, type, id }: IItemProps) => {
+    drop: ({ details, type, id, timeEstimate }: IItemProps) => {
       setResolvedItem([
         ...resolvedItem,
         { comment: `${details} (${getWorkTypeSymbol(type)}${id})` },
@@ -82,12 +89,14 @@ export const DropSlot: FC<IDropProps> = ({
           tracked: true,
         },
       ]);
+      console.log("selected items:", timeEstimate);
       //@ts-ignore
       setInitialSlot((prev) => ({
         ...prev,
         comment: !!prev?.comment
           ? `${prev.comment}|${details} (${getWorkTypeSymbol(type)}${id})`
           : `${details} (${getWorkTypeSymbol(type)}${id})`,
+        manualTime: time + timeEstimate,
       }));
     },
     collect: (monitor) => ({
@@ -109,13 +118,15 @@ export const DropSlot: FC<IDropProps> = ({
     () =>
       initialSlot?.comment?.split("|")?.map((tsk) => {
         let length = tsk.length - 9;
-        return tsk.substring(length).replaceAll(" ", "");
+        let hasComment = tsk.substring(length).replaceAll(" ", "");
+        if (!!hasComment) return hasComment;
+        return null;
       }),
     [initialSlot]
   );
 
   let workItemsType = workItems
-    ?.map((wkItm) => wkItm.substring(1, 3))
+    ?.map((wkItm) => wkItm?.substring(1, 3))
     ?.map((y) => getWorkTypes(y));
   let resolveItemsId = useMemo(
     () => workItems?.map((wkItm) => wkItm.substring(3, 8)),
@@ -128,29 +139,36 @@ export const DropSlot: FC<IDropProps> = ({
   const removeItem = (position: number) => {
     setInitialSlot(() => ({
       ...initialSlot,
-      comment: initialSlot?.comment
-        ?.split("|")
-        .filter(({}, indx) => indx != position)
-        .join("|"),
+      comment:
+        initialSlot?.comment
+          ?.split("|")
+          .filter(({}, indx) => indx != position)
+          .join("|") || null,
     }));
   };
-  const handleDone=()=>{
-    const newUpdateItem=(((resolveItemsId.map(id=>({
-      id:parseInt(id),
-      tracked: true
-       }) 
-       ) )as IUpdateItems));
-  
-    updateWorkItems(newUpdateItem)
-    updateTask(initialSlot)
+  const handleDone = () => {
+    const newUpdateItem = resolveItemsId.map((id) => ({
+      id: parseInt(id),
+      tracked: true,
+    })) as IUpdateItems;
+
+    updateWorkItems(newUpdateItem);
+    updateTask({
+      ...initialSlot,
+      manualTime:
+        initialSlot.manualTime > 100
+          ? initialSlot.manualTime
+          : initialSlot.manualTime * 3600,
+    });
     setInitialSlot({});
-    setIsEditing(false)
-  }
-  const handleClose=()=>{
+    setIsEditing(false);
+  };
+
+  const handleClose = () => {
     setInitialSlot({});
-    setIsEditing(false)
-  }
-  console.log("selected items:", ResolvedItems);
+    setIsEditing(false);
+  };
+
   return (
     <div className={style.editForm}>
       <div
@@ -206,7 +224,7 @@ export const DropSlot: FC<IDropProps> = ({
             mode="multiple"
             value={resolveItemsId?.length ? resolveItemsId : undefined}
           >
-            {ResolvedItems.map(({id}) => (
+            {ResolvedItems.map(({ id }) => (
               <Option value={id} key={id}>
                 {id}
               </Option>
@@ -258,12 +276,13 @@ export const DropSlot: FC<IDropProps> = ({
           <Input
             maxLength={2}
             style={{ width: "100%" }}
-            defaultValue={
-              initialSlot?.manualTime ? initialSlot?.manualTime / 3600 : 0
-            }
+            value={time}
             onChange={({ target: { value } }) => {
-              if (!isNaN(parseInt(value)))
+              if (!isNaN(parseInt(value))) {
                 setInitialSlot({ ...initialSlot, manualTime: parseInt(value) });
+              } else {
+                setInitialSlot({ ...initialSlot, manualTime: 0 });
+              }
             }}
           />
         </Form.Item>
@@ -287,8 +306,10 @@ export const DropSlot: FC<IDropProps> = ({
         </Button>
         <Button
           className={style.buttons}
-          style={{ backgroundColor: resolveItemsId?.length?"#009444":'gray' }}
-          disabled={!resolveItemsId?.length ||isInProgress?.updateWorkItems}
+          style={{
+            backgroundColor: resolveItemsId?.length ? "#009444" : "gray",
+          }}
+          disabled={!resolveItemsId?.length || isInProgress?.updateWorkItems}
         >
           <FaCheckCircle color="white" />
           <span

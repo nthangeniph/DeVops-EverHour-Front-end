@@ -1,7 +1,7 @@
 .outCover{
 .Board{
     width: 90%;
-    height: 495Px;
+    height: 45rem;
     background-color: #F0FFFF;
     margin: 5px auto 20px auto;
     display: flex;
@@ -20,12 +20,13 @@
     width: 87%;
     min-height: 31rem;
     max-height: 43rem;
-    margin: 5px auto 20px auto;
+    margin: 1rem auto 20px auto;
     background-color: rgba(255, 255, 255, .15);  
     backdrop-filter: blur(5px);
     position: absolute;
+    height: 110% !important;
     z-index: 4;
-    top:265px;
+    top:295px;
     left: 6.5%;
 
     .dropIsland{
@@ -58,5 +59,24 @@
   }
   .weekHeader{
     display: flex;
-    justify-content: space-between;
+    .headerText{
+        width: 18rem;
+    }
+
+    .timeReview{
+     display: flex;
+     margin:auto 1.2rem;
+     width:11rem;
+     height: 2rem;
+     background-color: inherit;
+     .indicator{
+        width: .7rem;
+        height: .7rem;
+        border-radius: 50%;
+        border: solid 1px black;
+        margin: auto 0px auto 10px;
+        background-color: #d82d16;
+     }
+    }
+    
   }

@@ -2,11 +2,10 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { EverHourHeader } from "./EverHourHeader";
 import { IResolvedProps, RecentTask } from "./Recenttask";
 import style from "./style.module.scss";
-import { TfiTimer } from "react-icons/tfi";
 import { Collapse } from "antd";
 import { v4 as uuidv4 } from "uuid";
 import ReactLoading from "react-loading";
-import { getWeekHeader } from "./utilis";
+import { getDaysMonth, getWeekHeader, timeIndicatorColor } from "./utilis";
 import { DropSlot } from "../DropSlot";
 import { ITimeSlot } from "../../models";
 import { useEverHour } from "../../providers/everHour";
@@ -24,7 +23,7 @@ export const EverHourHub: FC<any> = ({}) => {
   const [devOpsUpdate, setDeVOpsUpdate] = useState<IDevOpInfo[]>([]);
   const [isEditingMode, setIsEditing] = useState<boolean>(false);
   const [slot, setSlot] = useState<ITimeSlot>();
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(7);
   const dataFetchedRef = useRef(false);
   const { getWeekTasks, timeSheets } = useEverHour();
 
@@ -50,6 +49,8 @@ export const EverHourHub: FC<any> = ({}) => {
     setSlot(() => data);
     setIsEditing(true);
   };
+  console.log("has something:",timeSheets)
+
 
   return (
     <div className={style.outCover}>
@@ -61,20 +62,54 @@ export const EverHourHub: FC<any> = ({}) => {
             bordered={true}
           >
             {timeSheets.map(({ weekTasks, week }, index) => {
-               let weekTotal=weekTasks.reduce((totalWeek, { totalTime }) => {
-                console.log("time::", totalTime, totalWeek);
+               let weekTotal=weekTasks?.reduce((totalWeek, { totalTime }) => {
                 return totalWeek + totalTime;
               }, 0);
+              let timeIndicator={};
+              getDaysMonth(week.from,week.to).map(day=>{
+                //@ts-ignore
+                timeIndicator[day]=0;
+              })
+
+            
+            getDaysMonth(week.from,week.to).map(day=>{
+              let x= weekTasks.map(({taskTimes})=>{
+                             if(taskTimes.find(({date})=>date==day)?.id){
+                              return taskTimes.find(({date})=>date==day)
+                             }
+                               
+                }).filter(task=>!!task?.id)
+              //@ts-ignore
+                timeIndicator[day]=x.reduce((current,value)=>{
+                 
+                      return current+value.manualTime;
+                    
+                },0)
+                console.log('x::',timeIndicator);
+               })
+         
+              
+
           
 
               return (
                 <Panel
                   header={
                     <div className={style.weekHeader}>
-                      <h2>{getWeekHeader(week.from, week.to)}</h2>
+                      <h2 className={style.headerText}>{getWeekHeader(week.from, week.to)}</h2>
+                      <div className={style.timeReview}>
+                        {getDaysMonth(week.from,week.to).map(day=>{
+                          //@ts-ignore
+                          let color=timeIndicatorColor(timeIndicator[day]);
+                          return (
+                            <div className={style.indicator} style={{backgroundColor:`${color}`}}></div>
+                          )
+                        })
+                      }
+                        
+                      </div>
                       <div style={{display:'flex'}}>
-                      <TfiTimer/>
-                      <h2>{weekTotal / 3600}</h2></div>
+                      <h2>{`${weekTotal / 3600}h`}</h2></div>
                     </div>
                   }
                   key={index + 1}

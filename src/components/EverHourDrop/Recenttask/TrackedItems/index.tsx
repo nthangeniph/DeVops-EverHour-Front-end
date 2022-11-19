@@ -16,7 +16,7 @@ export const TrackedItems: FC<ITrackedItemProps> = ({ timeSlot }) => {
   });
   let workItemsType =
     workItems
-      ?.map((wkItm) => wkItm.substring(1, 3))
+      ?.map((wkItm) => wkItm?.substring(1, 3))
       ?.map((y) => getWorkTypes(y)) || [];
   let createComents = timeSlot?.comment
     ?.split("|")

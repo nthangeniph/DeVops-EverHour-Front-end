@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Tabs } from "antd";
 import { EditOutlined, LockFilled } from "@ant-design/icons";
 import style from "./style.module.scss";
+import { useAuth } from "../../providers/auth";
+import { ILogin, ISignUp } from "../../providers/auth/contexts";
 
 const Login = () => {
+  const { loginUser, signUpUser, accountDetails, isInProgress } = useAuth();
+  const [activeTab, setActiveTab] = useState<string>("1");
+
+  useEffect(() => {
+    if (accountDetails?.user?.username) {
+      setActiveTab(() => "1");
+    }
+    console.log("Active::", accountDetails);
+  }, [accountDetails]);
+
   const onChange = (key: string) => {
     console.log(key);
+  };
+
+  const handleSignUp = (values: ISignUp) => {
+    //@ts-ignore
+    delete values.confirm;
+    signUpUser(values);
+  };
+
+  const handleLogin = (values: ILogin) => {
+    loginUser(values);
   };
 
   return (
@@ -16,7 +38,7 @@ const Login = () => {
       <div className={style.tabContainer}>
         <Tabs
           centered
-          defaultActiveKey="1"
+          defaultActiveKey={activeTab}
           onChange={onChange}
           items={[
             {
@@ -32,7 +54,7 @@ const Login = () => {
                   className={style.loginForm}
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 17 }}
-                  onFinish={(values) => console.log(values)}
+                  onFinish={(values) => handleLogin(values)}
                 >
                   <Form.Item label="Email/UserName" name="username">
                     <Input />
@@ -46,6 +68,8 @@ const Login = () => {
                       className={style.loginBtn}
                       htmlType="submit"
                       type="primary"
+                      disabled={isInProgress?.loginUSer}
+                      loading={isInProgress?.loginUSer}
                     >
                       Sign In
                     </Button>
@@ -66,7 +90,7 @@ const Login = () => {
                   className={style.signUpForm}
                   labelCol={{ span: 7 }}
                   wrapperCol={{ span: 16 }}
-                  onFinish={(values) => console.log(values)}
+                  onFinish={handleSignUp}
                 >
                   <Form.Item label="Email Address" name="username">
                     <Input />
@@ -89,7 +113,7 @@ const Login = () => {
                   <Form.Item
                     name="password"
                     label="Password"
-                    rules={[ 
+                    rules={[
                       {
                         required: true,
                         message: "Please input your password!",

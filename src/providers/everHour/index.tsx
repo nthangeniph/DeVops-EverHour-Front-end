@@ -1,5 +1,6 @@
-import React, { FC, useReducer, useContext, useEffect, PropsWithChildren } from 'react';
+import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
 import { useMutate } from 'restful-react';
+import { getDaysMonth } from '../../components/EverHourDrop/utilis';
 import { getFlagSetters } from '../utils/flagsSetters';
 import { getWeekTasksAction, getWeekTasksErrorAction, getWeekTasksSuccessAction, updateTaskAction, updateTaskErrorAction } from './actions';
 import {  EverHourActionsContext, EverHourStateContext, ITimeSlot, IWeekTasksInput } from './contexts';
@@ -22,7 +23,7 @@ const getWeekTasks=(payload:IWeekTasksInput)=>{
     dispatch(getWeekTasksAction());
     fetchWeekTaskHttp(payload)
     .then(({timeSheets})=>{
-     
+      console.log("has something:",timeSheets)
       //@ts-ignore
            dispatch(getWeekTasksSuccessAction(timeSheets))
     })
@@ -33,11 +34,44 @@ const getWeekTasks=(payload:IWeekTasksInput)=>{
 }
 const updateTask=(payload:ITimeSlot)=>{
   dispatch(updateTaskAction());
+   
   updateTaskHttp(payload)
   .then((res)=>{
-   
-    //@ts-ignore
-         dispatch(updateTaskSuccessAction(res))
+  
+    const {timeSheets}=state;
+    const updatedTimeSheets=(timeSheets?.map(time=>{
+      
+
+      const {week,weekTasks,dailyTimes}=time
+      const weekdays = getDaysMonth(week.from, week.to);
+    
+      if(weekdays.includes(payload?.date)){
+         const updatedWeekTasks=weekTasks.map((task)=>{
+          if(task.id==payload?.id){
+            
+            const index=task.taskTimes.findIndex((x)=>x.date==payload?.date);
+             const currentTime=task.taskTimes[index].manualTime;
+            if(index>=0){
+              
+              task.taskTimes[index]={...res,id:task.id,  manualTime:res.time};
+            }else{
+              task.taskTimes.push({...res,id:task.id,manualTime:res.time})
+            }
+               return {...task,totalTime:task?.totalTime-currentTime+res.time};
+          }
+          return task;
+         })
+
+         return {
+          week,
+          dailyTimes,
+          weekTasks:updatedWeekTasks
+         }
+      }
+      return time;
+    }))
+
+         dispatch(getWeekTasksSuccessAction(updatedTimeSheets))
   })
   .catch((error)=>{
       dispatch(updateTaskErrorAction(error))

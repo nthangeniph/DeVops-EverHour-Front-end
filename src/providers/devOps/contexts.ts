@@ -36,12 +36,17 @@ export interface IWorkItem{
     timeEstimate?:number;
 
 }
+export interface IProject{
+  id?: string;
+  name?: string;
+}
 export interface IUpdateItems{
   updateWorkItems?:IUpdateItem[]
 }
  export interface IDevOpStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
         workItems?:Array<IWorkItem>;
+        projects?:Array<IProject>;
         updateWorkItems?:IUpdateItems;
         errorMessage?:string;
   }
@@ -50,7 +55,7 @@ export interface IUpdateItems{
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
      getWorkItems?:()=>void;
      updateWorkItems:(items:IUpdateItems)=>void;
-     refreshWorkItems?:(items:Array<IWorkItem>)=>void;
+     refreshWorkItems?:(items:Array<IWorkItem>,projects:Array<IProject>)=>void;
      refreshUpdateItems?:(items:IUpdateItems)=>void;
   }
 

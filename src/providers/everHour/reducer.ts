@@ -1,6 +1,7 @@
 import { EverHourActionEnums } from "./actions";
 import { IEverHourStateContext } from "./contexts";
 import flagsReducer from "../utils/flagsReducer";
+import { getDaysMonth } from "../../components/EverHourDrop/utilis";
 
 export function everHourReducer(
   incomingState: IEverHourStateContext,
@@ -18,17 +19,6 @@ export function everHourReducer(
     case EverHourActionEnums.GetWeekTasksError:
     case EverHourActionEnums.UpdateTaskRequest:
     case EverHourActionEnums.UpdateTaskSuccess:
-      // const {timeSheets}=state;
-      // const {timeSlot:{date}}=payload;
-      // const index=(timeSheets.filter(({dailyTimes})=>{
-      //   return dailyTimes.includes(date);
-      // }))
-      // console.log('time ::',index)
-      return {
-        ...state,
-        ...payload,
-      };
-
     case EverHourActionEnums.UpdateTasksError:
     case EverHourActionEnums.UpdateSlot:
       /* NEW_ACTION_ENUM_GOES_HERE */
