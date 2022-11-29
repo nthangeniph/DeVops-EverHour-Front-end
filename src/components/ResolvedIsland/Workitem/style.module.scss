@@ -8,8 +8,12 @@ background-color: white;
 
 .itemDetail{
 height: 3.2rem;
-overflow-y: scroll;
+overflow-y: hidden;
+scrollbar-width: none !important;
 margin: auto 3px;
+}
+.itemDetail:hover{
+    overflow-y: scroll;
 }
 }
 .moving{

@@ -14,7 +14,7 @@ export interface IEverHeadProps {
 export const EverHourHeader: FC<IEverHeadProps> = ({ week }) => {
 
     const days = getDaysMonthArray(new Date(week.from), new Date(week.to))
-
+   
     return (
         <div className={style.everHourContainer}>
             <div className={style.RecentTask}>Recent Tasks</div>

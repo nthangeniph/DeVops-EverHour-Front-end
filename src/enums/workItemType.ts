@@ -3,5 +3,6 @@ export enum WorkItemTypes{
    Bug="Bug",
    Feature="Feature",
    Task="Task",
-   Issue="Issue"
+   Issue="Issue",
+   Recurring="Recurring"
 }

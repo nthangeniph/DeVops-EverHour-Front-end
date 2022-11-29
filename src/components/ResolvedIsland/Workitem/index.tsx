@@ -12,13 +12,14 @@ interface IWorkItemProps{
     id:string;
     details?:string;
     type?:WorkItemTypes;
+    timeEstimate?:number;
 
 }
 
-const WorkItem:FC<IWorkItemProps>=({id,details,type})=>{
+const WorkItem:FC<IWorkItemProps>=({id,details,type,timeEstimate=0})=>{
     const [{isDragging},drag]=useDrag(()=>({
         type:'item',
-        item:{id,details,type},
+        item:{id,details,type,timeEstimate},
         collect:(monitor)=>({
             isDragging:!!monitor.isDragging(),
         }),

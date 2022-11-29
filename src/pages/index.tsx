@@ -1,31 +1,33 @@
 import type { NextPage } from 'next'
-import Image from 'next/image'
 import DragDrop from '../components/DragDrop'
 import styles from '../styles/Home.module.css'
+import {Layout} from 'antd';
+import style from './style.module.scss'
+import { LoginOutlined } from '@ant-design/icons';
+import { withAuth } from '../hocs/withAuth';
+import { useBeforeunload } from "react-beforeunload";
+import { refreshAccessToken } from '../utils/auth';
+import { useAuth } from '../providers/auth';
 
 const Home: NextPage = () => {
+  const {logoutUser}=useAuth();
+  useBeforeunload(() => refreshAccessToken());
+
   return (
     <div className={styles.container}>
+
+     <DragDrop/>
+
+
+     <Layout.Footer className={style.footer}>
      
-      <DragDrop/>
-        
-      
-
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <span 
+         style={{cursor:'pointer'}}
+          onClick={()=>logoutUser()}> <LoginOutlined style={{marginRight:'5px',cursor:'pointer'}}/> Sign Out</span> 
+          </Layout.Footer>
     </div>
+    
   )
 }
 
-export default Home
+export default withAuth(Home)
