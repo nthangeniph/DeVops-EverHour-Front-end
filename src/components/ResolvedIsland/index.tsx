@@ -1,41 +1,51 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Style from "./style.module.scss";
 import { WorkItem } from "./Workitem";
 import { SiAzuredevops } from "react-icons/si";
-import { FaFilter } from "react-icons/fa";
+import { FiFilter } from "react-icons/fi";
+import { GoCalendar } from "react-icons/go";
+import { AiOutlineSetting } from "react-icons/ai";
 import { IWorkItem } from "../../providers/devOps/contexts";
-import { Button, DatePicker, Form, Select } from "antd";
+import { Button, Empty, Switch } from "antd";
+import { FilterForm } from "../configuration/filter";
+import { ConfigForm } from "../configuration/settings";
+import { useConfigurations } from "../../providers/configurations";
+import { EmptyData } from "../Empty";
 import { useDevOps } from "../../providers/devOps";
+import { WorkItemTypes } from "../../enums";
+import { useAuth } from "../../providers/auth";
 
 interface IResolvedPROPs {
   ResolvedItems: Array<IWorkItem>;
 }
-const stateOptions = [
-  {
-    value: "Active",
-    id: "active",
-  },
-  {
-    value: "Resolved",
-    id: "resolved",
-  },
-  {
-    value: "Closed",
-    id: "closed",
-  },
-  {
-    value: "New",
-    id: "new",
-  },
-];
-const dateFormat = "DD/MM/YYYY";
-const tailLayout = {
-  wrapperCol: { offset: 2, span: 7 },
-};
 
 const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
-  const { projects } = useDevOps();
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
+  const [isConfiguring, setIsConfig] = useState<boolean>(false);
+  const { getAllConfigurations, configurations, isTracked, updateIsTracked } =
+    useConfigurations();
+  const { getAllProjects, getWorkItems } = useDevOps();
+  const { activeUserInfo } = useAuth();
+
+  useEffect(() => {
+    if (!!activeUserInfo?.user?.id) {
+      getAllConfigurations(activeUserInfo?.user?.id);
+    }
+  }, [activeUserInfo?.user?.id]);
+
+  useEffect(() => {
+    if (!configurations?.projects?.length && configurations?.userId) {
+      getAllProjects();
+      setIsFiltering(() => true);
+    }
+  }, [configurations]);
+
+  useEffect(() => {
+    getWorkItems();
+  }, [isTracked]);
+
+  const isEditing = isConfiguring || isFiltering;
+
   return (
     <>
       <div
@@ -51,90 +61,101 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
         <SiAzuredevops color="#77CCFF" style={{ margin: "14px 5px" }} />
         <span style={{ margin: "10px 0px" }}>DevOps Resolved Island</span>
       </div>
-      <div className={Style.devOpsWithFilter}>
+      <div
+        className={
+          !isEditing ? Style.devOpsWithFilter : Style.devOpsWithFiltering
+        }
+      >
         <div
-          className={!isFiltering ? Style.container : Style.containerFiltering}
+          className={!isEditing ? Style.container : Style.containerFiltering}
         >
-          {ResolvedItems?.map(({ title, workItemType, id, timeEstimate }) => {
-            return (
-              <>
-                <WorkItem
-                  id={id}
-                  details={title}
-                  key={id}
-                  type={workItemType as any}
-                  timeEstimate={timeEstimate}
-                />
-              </>
-            );
-          })}
+          {ResolvedItems?.length ? (
+            ResolvedItems?.filter(({ tracked }) => {
+              if (!tracked && !isTracked) {
+                return true;
+              } else if (tracked && isTracked) {
+                return true;
+              }
+            }).map(({ title, workItemType, id, timeEstimate, tracked }) => {
+              return (
+                <>
+                  <WorkItem
+                    id={id}
+                    details={title}
+                    key={id}
+                    type={
+                      isTracked
+                        ? WorkItemTypes?.Recurring
+                        : (workItemType as any)
+                    }
+                    timeEstimate={timeEstimate}
+                  />
+                </>
+              );
+            })
+          ) : (
+            <EmptyData
+              buttonDescription="Filter Now"
+              description="No work Items Found with the current Filters"
+              onEmpty={() => setIsFiltering((prev) => !prev)}
+            />
+          )}
         </div>
         <div className={Style.openFilter}>
-          <Button
-            style={{
-              border: "none",
-            }}
-            onClick={() => setIsFiltering((prev) => !prev)}
-          >
-            <FaFilter size={30} />
-            <br />
-            <span>Filters</span>
-          </Button>
+          <div className={Style.configButtons}>
+            <Button
+              style={{
+                border: "none",
+                marginBottom: "10px",
+              }}
+              onClick={() => setIsFiltering((prev) => !prev)}
+            >
+              <FiFilter size={30} />
+            </Button>
+            <Button
+              style={{
+                border: "none",
+                backgroundColor: "whitesmoke",
+              }}
+              disabled
+              onClick={() => setIsConfig((prev) => !prev)}
+            >
+              <AiOutlineSetting size={30} />
+            </Button>
+            <Switch
+              style={{
+                border: "none",
+                marginTop: "10px",
+              }}
+              checkedChildren="Tracked"
+              unCheckedChildren="UnTracked"
+              onChange={(value) => updateIsTracked(value)}
+            />
+            <Button
+              style={{
+                border: "none",
+                backgroundColor: "whitesmoke",
+                marginTop: "10px",
+              }}
+              disabled
+              onClick={() => setIsConfig((prev) => !prev)}
+            >
+              <GoCalendar size={30} color="green" />
+            </Button>
+          </div>
         </div>
-        <div className={isFiltering ? Style.filter : Style.hideFilters}>
-          <h2 style={{ display: "flex", margin: "0px 35%" }}>Filters</h2>
-          <Form
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 17 }}
-            title="Filters"
-          >
-            <Form.Item label="Projects">
-              <Select mode="multiple">
-                {projects?.map(({ id, name }) => {
-                  return (
-                    <Select.Option value={name} key={id}>
-                      {name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item label="States">
-              <Select mode="multiple">
-                {stateOptions.map(({ id, value }) => {
-                  return (
-                    <Select.Option value={value} key={id}>
-                      {value}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item label="From">
-              <DatePicker format={dateFormat} />
-            </Form.Item>
-            <Form.Item label="To">
-              <DatePicker format={dateFormat} />
-            </Form.Item>
-            <div className={Style.buttons}>
-              <Button style={{ marginRight: "10px" }}>Clear</Button>
-              <Button
-                style={{
-                  marginRight: "10px",
-                  backgroundColor: "#0096FF",
-                  color: "white",
-                }}
-              >
-                Apply
-              </Button>
-              <Button
-                onClick={() => setIsFiltering((prev) => !prev)}
-                style={{ backgroundColor: "#FF5733", color: "white" }}
-              >
-                Close
-              </Button>
-            </div>
-          </Form>
+        <div>
+          {isFiltering ? (
+            <FilterForm
+              isFiltering={isFiltering}
+              setIsFiltering={setIsFiltering}
+            />
+          ) : (
+            <ConfigForm
+              isConfiguring={isConfiguring}
+              setIsConfig={setIsConfig}
+            />
+          )}
         </div>
       </div>
     </>

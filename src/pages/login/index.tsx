@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Tabs } from "antd";
+import { Button, Form, Input, Tabs, Divider } from "antd";
 import { EditOutlined, LockFilled } from "@ant-design/icons";
 import style from "./style.module.scss";
 import { useAuth } from "../../providers/auth";
@@ -60,7 +60,7 @@ const Login = () => {
                     <Input />
                   </Form.Item>
                   <Form.Item label="Password" name="password">
-                    <Input />
+                    <Input.Password />
                   </Form.Item>
                   <br />
                   <Form.Item>
@@ -92,22 +92,22 @@ const Login = () => {
                   wrapperCol={{ span: 16 }}
                   onFinish={handleSignUp}
                 >
+                  <Divider>Everhour</Divider>
+                  <Form.Item label="xApiKey" name="xApiKey">
+                    <Input />
+                  </Form.Item>
+                  <Divider>DevOps</Divider>
+                  <Form.Item label="PAT" name="pat">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="UserName" name="devOpsUsername">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="DisplayName" name="devOpsDisplayName">
+                    <Input />
+                  </Form.Item>
+                  <Divider>Credentials</Divider>
                   <Form.Item label="Email Address" name="username">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item label="Everhour API Key" name="xApiKey">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item label="DevOps PAT" name="pat">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item label="DevOps UserName" name="devOpsUsername">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    label="DevOps DisplayName"
-                    name="devOpsDisplayName"
-                  >
                     <Input />
                   </Form.Item>
                   <Form.Item

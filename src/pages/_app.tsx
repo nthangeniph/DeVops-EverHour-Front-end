@@ -8,6 +8,7 @@ import { DevOpsProvider } from "../providers/devOps";
 import { EverHourProvider } from "../providers/everHour";
 import { AuthProvider } from "../providers/auth";
 import { getToken } from "../utils/auth";
+import { ConfigurationProvider } from "../providers/configurations";
 
 interface IState {
   headers: { [key: string]: string };
@@ -49,7 +50,6 @@ class Main extends App<{}, {}, IState> {
   //demo prepararion donec
   render() {
     const { Component, pageProps, router } = this.props;
-    console.log("found token ::", getToken());
 
     return (
       //@ts-ignore
@@ -64,9 +64,11 @@ class Main extends App<{}, {}, IState> {
         <AuthProvider>
           <DevOpsProvider>
             <EverHourProvider>
-              <DndProvider backend={HTML5Backend}>
-                <Component {...pageProps} {...(router?.query || {})} />
-              </DndProvider>
+              <ConfigurationProvider>
+                <DndProvider backend={HTML5Backend}>
+                  <Component {...pageProps} {...(router?.query || {})} />
+                </DndProvider>
+              </ConfigurationProvider>
             </EverHourProvider>
           </DevOpsProvider>
         </AuthProvider>

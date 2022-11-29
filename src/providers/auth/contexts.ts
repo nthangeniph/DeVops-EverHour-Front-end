@@ -27,15 +27,15 @@ export type IFlagActionedFlags =
  /* NEW_ACTIONED_FLAG_GOES_HERE */;
 export interface ISignUp extends IAccount,IUser {}
 export interface ILogin{
-    _id?: String;
-    username?: String;
-    email?: String;
-    password?: String;
+    _id?: string;
+    username?: string;
+    email?: string;
+    password?: string;
     roles?: Array<IRoleOut>;
-    xApiKey?: String;
-    devOpsDisplayName?: String;
-    pat?: String;
-    devOpsUsername?: String;
+    xApiKey?: string;
+    devOpsDisplayName?: string;
+    pat?: string;
+    devOpsUsername?: string;
 }
 export interface ILoginOut extends ILogin{
   accessToken?: string;

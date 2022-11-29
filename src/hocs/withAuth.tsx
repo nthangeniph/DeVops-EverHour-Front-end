@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Bars } from "react-loader-spinner";
 import { useAuth } from "../providers/auth";
 import { getToken } from "../utils/auth";
+import { useConfigurations } from "../providers/configurations";
 
 /**
  *
@@ -15,20 +16,17 @@ import { getToken } from "../utils/auth";
 export const withAuth =
   <P extends object>(Component: ComponentType<P>): FC<P> =>
   (...props) => {
-    const {
-      isInProgress: isLogging,
-      accountDetails,
-      activeUserInfo,
-    } = useAuth();
+    const { isInProgress: isLogging, activeUserInfo, checkAuth } = useAuth();
+    const { getAllConfigurations, configurations } = useConfigurations();
 
     const { push } = useRouter();
 
     const router = useRouter();
 
     useEffect(() => {
-      if (!activeUserInfo) {
+      if (!activeUserInfo?.accessToken) {
         const hasValidToken = getToken();
-
+        checkAuth(hasValidToken);
         if (!hasValidToken) {
           push(LOGIN_URL);
         } else {
@@ -39,8 +37,12 @@ export const withAuth =
     const activeInfo = useMemo(() => {
       return activeUserInfo;
     }, [activeUserInfo]);
+    //@ts-ignore
+    if (activeInfo?.id && !configurations?.userId) {
+      //@ts-ignore
+      getAllConfigurations(activeInfo?.id);
+    }
 
-    console.log("loggged", accountDetails, activeInfo);
     return isLogging && !activeInfo ? (
       <Bars
         height="250px"

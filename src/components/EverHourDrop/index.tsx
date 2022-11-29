@@ -49,8 +49,7 @@ export const EverHourHub: FC<any> = ({}) => {
     setSlot(() => data);
     setIsEditing(true);
   };
-  console.log("has something:",timeSheets)
-
+  console.log("has something:", timeSheets);
 
   return (
     <div className={style.outCover}>
@@ -62,54 +61,51 @@ export const EverHourHub: FC<any> = ({}) => {
             bordered={true}
           >
             {timeSheets.map(({ weekTasks, week }, index) => {
-               let weekTotal=weekTasks?.reduce((totalWeek, { totalTime }) => {
+              let weekTotal = weekTasks?.reduce((totalWeek, { totalTime }) => {
                 return totalWeek + totalTime;
               }, 0);
-              let timeIndicator={};
-              getDaysMonth(week.from,week.to).map(day=>{
+              let timeIndicator = {};
+              getDaysMonth(week.from, week.to).map((day) => {
                 //@ts-ignore
-                timeIndicator[day]=0;
-              })
+                timeIndicator[day] = 0;
+              });
 
-            
-            getDaysMonth(week.from,week.to).map(day=>{
-              let x= weekTasks.map(({taskTimes})=>{
-                             if(taskTimes.find(({date})=>date==day)?.id){
-                              return taskTimes.find(({date})=>date==day)
-                             }
-                               
-                }).filter(task=>!!task?.id)
-              //@ts-ignore
-                timeIndicator[day]=x.reduce((current,value)=>{
-                 
-                      return current+value.manualTime;
-                    
-                },0)
-                console.log('x::',timeIndicator);
-               })
-         
-              
-
-          
+              getDaysMonth(week.from, week.to).map((day) => {
+                let x = weekTasks
+                  .map(({ taskTimes }) => {
+                    if (taskTimes.find(({ date }) => date == day)?.id) {
+                      return taskTimes.find(({ date }) => date == day);
+                    }
+                  })
+                  .filter((task) => !!task?.id);
+                //@ts-ignore
+                timeIndicator[day] = x.reduce((current, value) => {
+                  return current + value.manualTime;
+                }, 0);
+              });
 
               return (
                 <Panel
                   header={
                     <div className={style.weekHeader}>
-                      <h2 className={style.headerText}>{getWeekHeader(week.from, week.to)}</h2>
+                      <h2 className={style.headerText}>
+                        {getWeekHeader(week.from, week.to)}
+                      </h2>
                       <div className={style.timeReview}>
-                        {getDaysMonth(week.from,week.to).map(day=>{
+                        {getDaysMonth(week.from, week.to).map((day) => {
                           //@ts-ignore
-                          let color=timeIndicatorColor(timeIndicator[day]);
+                          let color = timeIndicatorColor(timeIndicator[day]);
                           return (
-                            <div className={style.indicator} style={{backgroundColor:`${color}`}}></div>
-                          )
-                        })
-                      }
-                        
+                            <div
+                              className={style.indicator}
+                              style={{ backgroundColor: `${color}` }}
+                            ></div>
+                          );
+                        })}
                       </div>
-                      <div style={{display:'flex'}}>
-                      <h2>{`${weekTotal / 3600}h`}</h2></div>
+                      <div style={{ display: "flex" }}>
+                        <h2>{`${weekTotal / 3600}h`}</h2>
+                      </div>
                     </div>
                   }
                   key={index + 1}
@@ -117,23 +113,22 @@ export const EverHourHub: FC<any> = ({}) => {
                 >
                   <EverHourHeader week={week} />
 
-                  {weekTasks?.map((task) =>{
-                         weekTotal =+task.totalTime 
-                    return(
-                    <RecentTask
-                      key={uuidv4()}
-                      name={task.name}
-                      taskTimes={task.taskTimes}
-                      id={task?.id}
-                      projectName={task.projectName}
-                      totalTime={task.totalTime}
-                      week={week}
-                      handleDoubleClick={handleDoubleClick}
-                      setIsEditing={setIsEditing}
-                    />
-                  )
-                    })
-            }
+                  {weekTasks?.map((task) => {
+                    weekTotal = +task.totalTime;
+                    return (
+                      <RecentTask
+                        key={uuidv4()}
+                        name={task.name}
+                        taskTimes={task.taskTimes}
+                        id={task?.id}
+                        projectName={task.projectName}
+                        totalTime={task.totalTime}
+                        week={week}
+                        handleDoubleClick={handleDoubleClick}
+                        setIsEditing={setIsEditing}
+                      />
+                    );
+                  })}
                 </Panel>
               );
             })}

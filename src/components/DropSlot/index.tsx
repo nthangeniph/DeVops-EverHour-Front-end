@@ -28,8 +28,11 @@ import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { GetWorkItemType } from "../ResolvedIsland/Workitem/utilis";
 import { useDevOps, useDevOpsActions } from "../../providers/devOps";
-import { IUpdateItem, IUpdateItems } from "../../providers/devOps/contexts";
+import { IUpdateItems } from "../../providers/devOps/contexts";
 import { useEverHour } from "../../providers/everHour";
+import { WorkItemTypes } from "../../enums";
+import { useConfigurations } from "../../providers/configurations";
+import TextArea from "antd/lib/input/TextArea";
 
 export interface IDropProps {
   setResolvedItem?: (value: IResolvedProps[]) => void;
@@ -57,6 +60,8 @@ export const DropSlot: FC<IDropProps> = ({
   const { workItems: ResolvedItems, isInProgress, projects } = useDevOps();
   const { updateTask } = useEverHour();
   const { updateWorkItems, refreshWorkItems } = useDevOpsActions();
+  const { isTracked } = useConfigurations();
+  const [isManual, setIsManual] = useState<boolean>(false);
 
   useEffect(() => {
     if (resolvedItem?.length) {
@@ -79,7 +84,11 @@ export const DropSlot: FC<IDropProps> = ({
     drop: ({ details, type, id, timeEstimate }: IItemProps) => {
       setResolvedItem([
         ...resolvedItem,
-        { comment: `${details} (${getWorkTypeSymbol(type)}${id})` },
+        {
+          comment: `${details} (${getWorkTypeSymbol(
+            isTracked ? WorkItemTypes.Recurring : type
+          )}${id})`,
+        },
       ]);
       setDeVOpsUpdate([
         ...devOpsUpdate,
@@ -89,14 +98,14 @@ export const DropSlot: FC<IDropProps> = ({
           tracked: true,
         },
       ]);
-      console.log("selected items:", timeEstimate);
+
       //@ts-ignore
       setInitialSlot((prev) => ({
         ...prev,
         comment: !!prev?.comment
           ? `${prev.comment}|${details} (${getWorkTypeSymbol(type)}${id})`
           : `${details} (${getWorkTypeSymbol(type)}${id})`,
-        manualTime: time + timeEstimate,
+        manualTime: !!time ? time + (timeEstimate || 0) : timeEstimate || 0,
       }));
     },
     collect: (monitor) => ({
@@ -128,6 +137,7 @@ export const DropSlot: FC<IDropProps> = ({
   let workItemsType = workItems
     ?.map((wkItm) => wkItm?.substring(1, 3))
     ?.map((y) => getWorkTypes(y));
+
   let resolveItemsId = useMemo(
     () => workItems?.map((wkItm) => wkItm.substring(3, 8)),
     [workItems]
@@ -174,8 +184,9 @@ export const DropSlot: FC<IDropProps> = ({
       <div
         className={!isOver ? style.dropContainer : style.isOverColumn}
         ref={drop}
+        onDoubleClick={() => setIsManual((prev) => !prev)}
       >
-        {workItemsType?.length ? (
+        {workItemsType?.length && !isManual ? (
           workItemsType?.map((itemtype, index) => {
             return (
               <div className={style.ItemPreview} key={uuidv4()}>
@@ -199,6 +210,12 @@ export const DropSlot: FC<IDropProps> = ({
               </div>
             );
           })
+        ) : isManual ? (
+          <TextArea
+            placeholder="Work item details"
+            defaultValue={initialSlot?.comment}
+            autoSize={{ minRows: 3, maxRows: 3 }}
+          />
         ) : (
           <p>Drop new workItems here</p>
         )}
@@ -224,7 +241,7 @@ export const DropSlot: FC<IDropProps> = ({
             mode="multiple"
             value={resolveItemsId?.length ? resolveItemsId : undefined}
           >
-            {ResolvedItems.map(({ id }) => (
+            {ResolvedItems?.map(({ id }) => (
               <Option value={id} key={id}>
                 {id}
               </Option>
@@ -276,7 +293,7 @@ export const DropSlot: FC<IDropProps> = ({
           <Input
             maxLength={2}
             style={{ width: "100%" }}
-            value={time}
+            value={!!time ? time : 0}
             onChange={({ target: { value } }) => {
               if (!isNaN(parseInt(value))) {
                 setInitialSlot({ ...initialSlot, manualTime: parseInt(value) });
@@ -299,6 +316,7 @@ export const DropSlot: FC<IDropProps> = ({
         <Button
           className={style.buttons}
           style={{ backgroundColor: "#1c75bc" }}
+          disabled
         >
           {" "}
           <BsClipboardPlus color="white" />

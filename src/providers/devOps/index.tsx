@@ -8,6 +8,9 @@ import React, {
 import { useMutate } from "restful-react";
 import { getFlagSetters } from "../utils/flagsSetters";
 import {
+  getProjectsAction,
+  getProjectsErrorAction,
+  getProjectsSuccessAction,
   getWorkItemsAction,
   getWorkItemsErrorAction,
   getWorkItemsSuccessAction,
@@ -29,6 +32,10 @@ const DevOpsProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [state, dispatch] = useReducer(devOpsReducer, {});
   const { mutate: fetchWorkItemsHttp } = useMutate({
     path: "/api/devOps/getAllWorkItems",
+    verb: "POST",
+  });
+  const { mutate: fetchProjectsHttp } = useMutate({
+    path: "/api/devOps/getAllProjects",
     verb: "POST",
   });
   const { mutate: updateWorkItemsHttp } = useMutate({
@@ -66,6 +73,16 @@ const DevOpsProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   ) => {
     dispatch(getWorkItemsSuccessAction(items, projects));
   };
+  const getAllProjects = () => {
+    dispatch(getProjectsAction());
+    fetchProjectsHttp({})
+      .then(({ projects }) => {
+        dispatch(getProjectsSuccessAction(projects));
+      })
+      .catch((error) => {
+        dispatch(getProjectsErrorAction(error));
+      });
+  };
   const refreshUpdateItems = (payload: IUpdateItems) => {
     dispatch(updateWorkItemsSuccessAction(payload));
   };
@@ -78,6 +95,7 @@ const DevOpsProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           updateWorkItems,
           refreshWorkItems,
           refreshUpdateItems,
+          getAllProjects,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

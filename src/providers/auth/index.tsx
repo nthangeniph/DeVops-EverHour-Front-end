@@ -16,13 +16,13 @@ import {
   sigupUserErrorAction,
   sigupUserSuccessAction,
 } from "./actions";
+import { message } from "antd";
 import {
   AuthActionsContext,
   AuthStateContext,
   ILogin,
   ISignUp,
 } from "./contexts";
-import { message } from "antd";
 import { authReducer } from "./reducer";
 import { IActiveUserInfo } from "../../models/account.model";
 import { saveUserToken, removeAccessToken } from "../../utils/auth";
@@ -33,6 +33,10 @@ const AuthProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {});
   const { mutate: signUpHttp } = useMutate({
     path: "/api/auth/signup",
+    verb: "POST",
+  });
+  const { mutate: createConfigHttp } = useMutate({
+    path: "/api/configurations/create",
     verb: "POST",
   });
   const { mutate: loginUserHttp } = useMutate({
@@ -52,7 +56,18 @@ const AuthProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     dispatch(sigupUserAction());
     signUpHttp(payload)
       .then(({ user }) => {
-        dispatch(sigupUserSuccessAction(user));
+        createConfigHttp({
+          userId: user?.id,
+          companyname: "boxfusion",
+          projects: [],
+          states: [],
+        }).then(() => {
+          dispatch(sigupUserSuccessAction(user));
+          loginUser({
+            username: user?.username,
+            password: payload.password,
+          });
+        });
       })
       .catch(({ message: errorMessage }) => {
         dispatch(sigupUserErrorAction(errorMessage));
@@ -65,8 +80,10 @@ const AuthProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       .then((res) => {
         dispatch(sigInUserSuccessAction(res));
       })
-      .catch((res) => {
-        dispatch(sigInUserErrorAction(res?.error.message));
+      .catch(({ message: Error }) => {
+        dispatch(sigInUserErrorAction(Error));
+
+        message.error(Error, 2);
       });
   };
   const logoutUser = () => {

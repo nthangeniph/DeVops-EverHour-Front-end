@@ -1,16 +1,13 @@
 import { LOGIN_URL } from "../routes";
 import jwt from 'jsonwebtoken';
 import { ILogin } from "../providers/auth/contexts";
-import { ACCESS_TOKEN_NAME } from "../app-constants";
-import dotenv from 'dotenv';
+import { ACCESS_TOKEN_NAME, SECRET_KEY } from "../app-constants";
 import jwt_decode from "jwt-decode";
 import { IActiveUserInfo } from "../models/account.model";
 
 
 
-dotenv.config();
 
-const config=process.env.SECRET_KEY;
 // Fields to remove from the AuthContext
 interface IAccessToken extends ILogin {
   encryptedAccessToken?: string | null;
@@ -60,13 +57,12 @@ export const getToken = () => {
 
         const isTokenValid =
           Math.floor(new Date().getTime() / 1000) <= decoded?.exp;
-
         if (isTokenValid) {
           const { id, roles, username } = decoded;
           const accDetails: IActiveUserInfo = {
             ...decoded,
             user: {
-              _id: id,
+              id: id,
               username,
               roles,
             },
@@ -103,12 +99,12 @@ export const refreshAccessToken = () => {
   const tokenObj = getToken();
 
   if(!!tokenObj){
-    const {devOpsDisplayName,devOpsUsername,pat,user:{ _id,email,roles,username},xApiKey}=tokenObj;
+    const {devOpsDisplayName,devOpsUsername,pat,user:{ id,email,roles,username},xApiKey}=tokenObj;
 
-    console.log("jbjbj",config)
+  
    
     var token = jwt.sign({
-      id:_id,
+      id,
       username,
       email,
       pat,
@@ -116,7 +112,7 @@ export const refreshAccessToken = () => {
       devOpsUsername,
       xApiKey,
       roles,
-    }, config, {
+    }, SECRET_KEY, {
       expiresIn: 72000,
     });
 

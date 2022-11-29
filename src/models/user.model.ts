@@ -1,15 +1,15 @@
 import { IRoleOut } from './role.model';
 
 export interface IUser {
-  username?: String;
-  email?: String;
-  password?: String;
+  username?: string;
+  email?: string;
+  password?: string;
   roles?: Array<string>;
 }
 export interface IUserOut {
-  _id?: String;
-  username?: String;
-  email?: String;
-  password?: String;
+  id?:string;
+  username?: string;
+  email?: string;
+  password?: string;
   roles?: Array<IRoleOut>;
 }

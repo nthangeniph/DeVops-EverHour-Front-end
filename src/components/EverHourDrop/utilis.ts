@@ -101,6 +101,8 @@ function getWorkTypes(x: string) {
             return WorkItemTypes.Feature;
         case 'ts':
             return WorkItemTypes.Task;
+        case 'rc':
+                return WorkItemTypes.Recurring;
       
     }
 }
@@ -114,6 +116,8 @@ function getWorkTypeSymbol(x: WorkItemTypes) {
             return 'ft';
         case WorkItemTypes.Task:
             return 'ts' ;
+        case WorkItemTypes.Recurring:
+                return 'rc' ;
         default:
             return 'bg';
     }

@@ -23,7 +23,8 @@ const Home: NextPage = () => {
      
       <span 
          style={{cursor:'pointer'}}
-          onClick={()=>logoutUser()}> <LoginOutlined style={{marginRight:'5px',cursor:'pointer'}}/> Sign Out</span> </Layout.Footer>
+          onClick={()=>logoutUser()}> <LoginOutlined style={{marginRight:'5px',cursor:'pointer'}}/> Sign Out</span> 
+          </Layout.Footer>
     </div>
     
   )

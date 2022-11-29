@@ -30,6 +30,10 @@ export function devOpsReducer(
     case DevOpsActionEnums.UpdateWorkItemsSuccess:
     case DevOpsActionEnums.UpdateWorkItemsError:
     case DevOpsActionEnums.GetWorkItemsRequest:
+    case DevOpsActionEnums.GetProjectsRequest:
+    case DevOpsActionEnums.GetProjectsSuccess:
+    case DevOpsActionEnums.GetProjectsError:
+
       /* NEW_ACTION_ENUM_GOES_HERE */
       //#endregion
       return {
