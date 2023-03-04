@@ -48,6 +48,7 @@ export const FilterForm: FC<IFilter> = ({ isFiltering, setIsFiltering }) => {
   useEffect(() => {
     if (succeeded?.updateConfig) {
       getWorkItems();
+      console.log("getConfigById002");
       getAllConfigurations(activeUserInfo?.user?.id);
     }
   }, [succeeded?.updateConfig]);
@@ -85,7 +86,7 @@ export const FilterForm: FC<IFilter> = ({ isFiltering, setIsFiltering }) => {
     setConfig(() => ({}));
     form.resetFields();
   };
-  
+
   return (
     <div className={isFiltering ? Style.filter : Style.hideFilters}>
       <h2 style={{ display: "flex", margin: "0px 35%" }}>Filters</h2>

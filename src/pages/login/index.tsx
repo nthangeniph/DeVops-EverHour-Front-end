@@ -13,7 +13,6 @@ const Login = () => {
     if (accountDetails?.user?.username) {
       setActiveTab(() => "1");
     }
-    console.log("Active::", accountDetails);
   }, [accountDetails]);
 
   const onChange = (key: string) => {
@@ -93,7 +92,7 @@ const Login = () => {
                   onFinish={handleSignUp}
                 >
                   <Divider>Everhour</Divider>
-                  <Form.Item label="xApiKey" name="xApiKey">
+                  <Form.Item label="XApiKey" name="xApiKey">
                     <Input />
                   </Form.Item>
                   <Divider>DevOps</Divider>

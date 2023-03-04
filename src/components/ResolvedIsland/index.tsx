@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import Style from "./style.module.scss";
 import { WorkItem } from "./Workitem";
 import { SiAzuredevops } from "react-icons/si";
 import { FiFilter } from "react-icons/fi";
 import { GoCalendar } from "react-icons/go";
 import { AiOutlineSetting } from "react-icons/ai";
+import { MdLogout } from "react-icons/md";
 import { IWorkItem } from "../../providers/devOps/contexts";
-import { Button, Empty, Switch } from "antd";
+import { Button, Switch } from "antd";
 import { FilterForm } from "../configuration/filter";
 import { ConfigForm } from "../configuration/settings";
 import { useConfigurations } from "../../providers/configurations";
@@ -14,6 +15,8 @@ import { EmptyData } from "../Empty";
 import { useDevOps } from "../../providers/devOps";
 import { WorkItemTypes } from "../../enums";
 import { useAuth } from "../../providers/auth";
+import { useBeforeunload } from "react-beforeunload";
+import { refreshAccessToken } from "../../utils/auth";
 
 interface IResolvedPROPs {
   ResolvedItems: Array<IWorkItem>;
@@ -22,13 +25,19 @@ interface IResolvedPROPs {
 const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
   const [isConfiguring, setIsConfig] = useState<boolean>(false);
-  const { getAllConfigurations, configurations, isTracked, updateIsTracked } =
-    useConfigurations();
+  const {
+    getAllConfigurations,
+    configurations,
+    isTracked,
+    updateIsTracked,
+    isInProgress,
+  } = useConfigurations();
   const { getAllProjects, getWorkItems } = useDevOps();
-  const { activeUserInfo } = useAuth();
+  const { activeUserInfo, logoutUser } = useAuth();
+  useBeforeunload(() => refreshAccessToken());
 
   useEffect(() => {
-    if (!!activeUserInfo?.user?.id) {
+    if (!!activeUserInfo?.user?.id && !configurations?.companyname) {
       getAllConfigurations(activeUserInfo?.user?.id);
     }
   }, [activeUserInfo?.user?.id]);
@@ -76,9 +85,9 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
               } else if (tracked && isTracked) {
                 return true;
               }
-            }).map(({ title, workItemType, id, timeEstimate, tracked }) => {
+            }).map(({ title, workItemType, id, timeEstimate }) => {
               return (
-                <>
+                <Fragment key={id}>
                   <WorkItem
                     id={id}
                     details={title}
@@ -90,7 +99,7 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
                     }
                     timeEstimate={timeEstimate}
                   />
-                </>
+                </Fragment>
               );
             })
           ) : (
@@ -141,6 +150,16 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
               onClick={() => setIsConfig((prev) => !prev)}
             >
               <GoCalendar size={30} color="green" />
+            </Button>
+            <Button
+              style={{
+                border: "none",
+                backgroundColor: "whitesmoke",
+                marginTop: "10px",
+              }}
+              onClick={() => logoutUser()}
+            >
+              <MdLogout size={30} color="#838383" />
             </Button>
           </div>
         </div>

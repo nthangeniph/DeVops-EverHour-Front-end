@@ -49,7 +49,6 @@ export const EverHourHub: FC<any> = ({}) => {
     setSlot(() => data);
     setIsEditing(true);
   };
-  console.log("has something:", timeSheets);
 
   return (
     <div className={style.outCover}>
@@ -97,6 +96,7 @@ export const EverHourHub: FC<any> = ({}) => {
                           let color = timeIndicatorColor(timeIndicator[day]);
                           return (
                             <div
+                              key={day}
                               className={style.indicator}
                               style={{ backgroundColor: `${color}` }}
                             ></div>
@@ -111,7 +111,7 @@ export const EverHourHub: FC<any> = ({}) => {
                   key={index + 1}
                   className={style.custom}
                 >
-                  <EverHourHeader week={week} />
+                  <EverHourHeader week={week} key={uuidv4()} />
 
                   {weekTasks?.map((task) => {
                     weekTotal = +task.totalTime;

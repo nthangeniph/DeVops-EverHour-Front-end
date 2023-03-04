@@ -19,30 +19,31 @@ export const withAuth =
     const { isInProgress: isLogging, activeUserInfo, checkAuth } = useAuth();
     const { getAllConfigurations, configurations } = useConfigurations();
 
-    const { push } = useRouter();
-
     const router = useRouter();
+    const { push, replace } = router;
 
     useEffect(() => {
       if (!activeUserInfo?.accessToken) {
         const hasValidToken = getToken();
         checkAuth(hasValidToken);
         if (!hasValidToken) {
-          push(LOGIN_URL);
-        } else {
-          push(DASHBOARD_PAGE_URL);
+          replace(LOGIN_URL);
         }
+      } else {
+        push(DASHBOARD_PAGE_URL);
       }
-    }, [isLogging]);
+    }, [activeUserInfo?.accessToken]);
+
     const activeInfo = useMemo(() => {
       return activeUserInfo;
     }, [activeUserInfo]);
-    //@ts-ignore
-    if (activeInfo?.id && !configurations?.userId) {
-      //@ts-ignore
-      getAllConfigurations(activeInfo?.id);
-    }
 
+    useEffect(() => {
+      if (activeInfo?.id && !configurations?.userId) {
+        getAllConfigurations(activeInfo?.id);
+      }
+    }, [activeUserInfo?.id]);
+    
     return isLogging && !activeInfo ? (
       <Bars
         height="250px"

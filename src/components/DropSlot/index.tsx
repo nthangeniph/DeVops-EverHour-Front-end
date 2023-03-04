@@ -3,7 +3,6 @@ import {
   DatePicker,
   Form,
   Input,
-  Mentions,
   Select,
   Tooltip,
 } from "antd";
@@ -144,7 +143,7 @@ export const DropSlot: FC<IDropProps> = ({
   );
   let createComents = initialSlot?.comment
     ?.split("|")
-    ?.map((commt) => <p>{commt}</p>);
+    ?.map((commt,index) => <p key={`${commt}${index}`}>{commt}</p>);
 
   const removeItem = (position: number) => {
     setInitialSlot(() => ({

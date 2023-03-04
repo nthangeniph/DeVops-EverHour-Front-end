@@ -4,8 +4,8 @@ const getDaysMonthArray = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/");
         arr.push({
-            day: parseInt(date[1]),
-            month: parseInt(date[0])
+            day: parseInt(date[0]),
+            month: parseInt(date[1])
         });
     }
     return arr;
@@ -14,24 +14,25 @@ const getDaysMonthArray = (start: any, end: any) => {
 const getDaysMonth = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/").reverse().join('-');
-       let tempDate=date.split('-').map(dt=>{
-            return dt.length>1?dt:`0${dt}`
+        let tempDate = date.split('-').map(dt => {
+            return dt.length > 1 ? dt : `0${dt}`
         });
 
         arr.push(`${tempDate[0]}-${tempDate[2]}-${tempDate[1]}`);
     }
-  
+
     return arr;
 };
 
 const getWeekHeader = (start: any, end: any) => {
     let startDate = new Date(start).toLocaleDateString().split('/');
     let endDate = new Date(end).toLocaleDateString().split('/');
-    return `${getMonth(parseInt(startDate[0]))} ${startDate[1]} -- ${getMonth(parseInt(endDate[0]))} ${endDate[1]}`
+    return `${getMonth(parseInt(startDate[1]))} ${startDate[0]} -- ${getMonth(parseInt(endDate[1]))} ${endDate[0]}`
 }
 
 
 function getMonth(date: number) {
+
     switch (date) {
         case 1:
             return 'January'
@@ -78,16 +79,16 @@ const convertSecondsToHours = (time: number, toSeconds = false) => {
 }
 
 
-const timeIndicatorColor=(time:number)=>{
-    const hours=convertSecondsToHours(time);
-    if(hours>10){
+const timeIndicatorColor = (time: number) => {
+    const hours = convertSecondsToHours(time);
+    if (hours > 10) {
         return 'red'
-    }else if(5<hours && hours<=10){
+    } else if (5 < hours && hours <= 10) {
         return 'green'
 
-    }else if(hours<5){
+    } else if (hours < 5) {
         return 'gray'
-    }else{
+    } else {
         return 'white'
     }
 }
@@ -102,8 +103,8 @@ function getWorkTypes(x: string) {
         case 'ts':
             return WorkItemTypes.Task;
         case 'rc':
-                return WorkItemTypes.Recurring;
-      
+            return WorkItemTypes.Recurring;
+
     }
 }
 function getWorkTypeSymbol(x: WorkItemTypes) {
@@ -115,9 +116,9 @@ function getWorkTypeSymbol(x: WorkItemTypes) {
         case WorkItemTypes.Feature:
             return 'ft';
         case WorkItemTypes.Task:
-            return 'ts' ;
+            return 'ts';
         case WorkItemTypes.Recurring:
-                return 'rc' ;
+            return 'rc';
         default:
             return 'bg';
     }
@@ -129,4 +130,4 @@ function getWorkTypeSymbol(x: WorkItemTypes) {
 
 
 
-export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours,timeIndicatorColor, getWeekHeader,getWorkTypes,getWorkTypeSymbol }
+export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours, timeIndicatorColor, getWeekHeader, getWorkTypes, getWorkTypeSymbol }
