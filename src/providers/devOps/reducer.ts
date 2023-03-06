@@ -15,17 +15,7 @@ export function devOpsReducer(
   switch (type) {
     case DevOpsActionEnums.GetWorkItemsRequest:
     case DevOpsActionEnums.GetWorkItemsSuccess:
-
-    
-        return {
-            ...state,isInProgress:{getWorkItems:false},
-            ...payload,
-          };
     case DevOpsActionEnums.GetWorkItemsError:
-        return {
-            ...state,isInProgress:{getWorkItems:false},
-            ...payload,
-          };
     case DevOpsActionEnums.UpdateWorkItemsRequest:
     case DevOpsActionEnums.UpdateWorkItemsSuccess:
     case DevOpsActionEnums.UpdateWorkItemsError:

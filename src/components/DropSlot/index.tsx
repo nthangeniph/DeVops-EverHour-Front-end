@@ -1,11 +1,4 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Select,
-  Tooltip,
-} from "antd";
+import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { FaProjectDiagram } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
@@ -43,34 +36,24 @@ export interface IDropProps {
   slot?: ITimeSlot;
 }
 
-const dateFormat = "YYYY-MM-DD";
+const dateFormat = "YYYY-DD-MM";
 
 const { Option } = Select;
 
 export const DropSlot: FC<IDropProps> = ({
   resolvedItem,
-  devOpsUpdate = [],
   setResolvedItem,
   setIsEditing,
-  setDeVOpsUpdate,
   slot,
 }) => {
   const [initialSlot, setInitialSlot] = useState<ITimeSlot>(slot);
   const { workItems: ResolvedItems, isInProgress, projects } = useDevOps();
   const { updateTask } = useEverHour();
-  const { updateWorkItems, refreshWorkItems } = useDevOpsActions();
+  const { updateWorkItems, refreshWorkItems, getWorkItems } =
+    useDevOpsActions();
   const { isTracked } = useConfigurations();
   const [isManual, setIsManual] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (resolvedItem?.length) {
-      const filterResolvedItems = ResolvedItems.filter(
-        ({ id }) => !resolveItemsId?.includes(id.toString())
-      );
-
-      refreshWorkItems(filterResolvedItems, projects);
-    }
-  }, [resolvedItem]);
+  const [slotHolder, setSlotHolder] = useState<IDevOpInfo[]>([]);
 
   const time = useMemo(() => {
     if (initialSlot?.manualTime > 100) {
@@ -81,20 +64,20 @@ export const DropSlot: FC<IDropProps> = ({
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "item",
     drop: ({ details, type, id, timeEstimate }: IItemProps) => {
+      setSlotHolder((prev) => [
+        ...prev,
+        {
+          id,
+          type,
+          tracked: true,
+        },
+      ]);
       setResolvedItem([
         ...resolvedItem,
         {
           comment: `${details} (${getWorkTypeSymbol(
             isTracked ? WorkItemTypes.Recurring : type
           )}${id})`,
-        },
-      ]);
-      setDeVOpsUpdate([
-        ...devOpsUpdate,
-        {
-          id,
-          type,
-          tracked: true,
         },
       ]);
 
@@ -138,14 +121,38 @@ export const DropSlot: FC<IDropProps> = ({
     ?.map((y) => getWorkTypes(y));
 
   let resolveItemsId = useMemo(
-    () => workItems?.map((wkItm) => wkItm.substring(3, 8)),
+    () => workItems?.map((wkItm) => wkItm.substring(3, 7)),
     [workItems]
   );
-  let createComents = initialSlot?.comment
-    ?.split("|")
-    ?.map((commt,index) => <p key={`${commt}${index}`}>{commt}</p>);
+
+  useEffect(() => {
+    const filterResolvedItems = ResolvedItems.map(({ id, ...rest }) => {
+      let inUse = slotHolder?.find(({ id: idx }) => idx == id);
+      if (inUse?.tracked) {
+        return {
+          ...rest,
+          id,
+          tracked: true,
+        };
+      } else {
+        return {
+          ...rest,
+          id,
+          tracked: false,
+        };
+      }
+    });
+    refreshWorkItems(filterResolvedItems, projects);
+  }, [slotHolder]);
+
+  let createComents = useMemo(() => {
+    return initialSlot?.comment
+      ?.split("|")
+      ?.map((commt, index) => <p key={`${commt}${index}`}>{commt}</p>);
+  }, [initialSlot]);
 
   const removeItem = (position: number) => {
+    let inProgressTasks = slotHolder.filter(({ tracked }) => tracked);
     setInitialSlot(() => ({
       ...initialSlot,
       comment:
@@ -154,6 +161,11 @@ export const DropSlot: FC<IDropProps> = ({
           .filter(({}, indx) => indx != position)
           .join("|") || null,
     }));
+    setSlotHolder(() =>
+      inProgressTasks.map((item, index) =>
+        index == position ? { ...item, tracked: false } : item
+      )
+    );
   };
   const handleDone = () => {
     const newUpdateItem = resolveItemsId.map((id) => ({
@@ -174,6 +186,7 @@ export const DropSlot: FC<IDropProps> = ({
   };
 
   const handleClose = () => {
+    getWorkItems();
     setInitialSlot({});
     setIsEditing(false);
   };

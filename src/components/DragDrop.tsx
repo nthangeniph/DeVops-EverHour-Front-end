@@ -1,6 +1,4 @@
-import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useDevOps } from "../providers/devOps";
 import { EverHourHub } from "./EverHourDrop";
 import { ResolvedIsland } from "./ResolvedIsland";
@@ -20,16 +18,11 @@ const DragDrop = () => {
     // Returns null on first render, so the client and server match
     return null;
   }
-  console.log("ResolvedIsland");
 
   return (
     <div>
-      <Spin
-        spinning={isInProgress?.getWorkItems}
-        tip="Fetching Your DevOps Work Items"
-      >
-        <ResolvedIsland ResolvedItems={workItems} />
-      </Spin>
+      <ResolvedIsland ResolvedItems={workItems} />
+
       <div style={{ height: "45rem" }}>
         <EverHourHub />
       </div>

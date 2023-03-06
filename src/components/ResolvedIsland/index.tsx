@@ -7,7 +7,7 @@ import { GoCalendar } from "react-icons/go";
 import { AiOutlineSetting } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { IWorkItem } from "../../providers/devOps/contexts";
-import { Button, Switch } from "antd";
+import { Button, Spin, Switch } from "antd";
 import { FilterForm } from "../configuration/filter";
 import { ConfigForm } from "../configuration/settings";
 import { useConfigurations } from "../../providers/configurations";
@@ -17,6 +17,8 @@ import { WorkItemTypes } from "../../enums";
 import { useAuth } from "../../providers/auth";
 import { useBeforeunload } from "react-beforeunload";
 import { refreshAccessToken } from "../../utils/auth";
+import { Tooltip } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface IResolvedPROPs {
   ResolvedItems: Array<IWorkItem>;
@@ -25,14 +27,13 @@ interface IResolvedPROPs {
 const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
   const [isConfiguring, setIsConfig] = useState<boolean>(false);
+  const { getAllConfigurations, configurations, isTracked, updateIsTracked } =
+    useConfigurations();
   const {
-    getAllConfigurations,
-    configurations,
-    isTracked,
-    updateIsTracked,
-    isInProgress,
-  } = useConfigurations();
-  const { getAllProjects, getWorkItems } = useDevOps();
+    getAllProjects,
+    getWorkItems,
+    isInProgress: { getWorkItems: isFetchingWork_Items },
+  } = useDevOps();
   const { activeUserInfo, logoutUser } = useAuth();
   useBeforeunload(() => refreshAccessToken());
 
@@ -75,41 +76,48 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
           !isEditing ? Style.devOpsWithFilter : Style.devOpsWithFiltering
         }
       >
-        <div
-          className={!isEditing ? Style.container : Style.containerFiltering}
+        <Spin
+          spinning={isFetchingWork_Items}
+          tip="Fetching Your DevOps Work Items"
+          style={{ color: "#b1dbc4" }}
+          indicator={<LoadingOutlined style={{ fontSize: 28 }} />}
         >
-          {ResolvedItems?.length ? (
-            ResolvedItems?.filter(({ tracked }) => {
-              if (!tracked && !isTracked) {
-                return true;
-              } else if (tracked && isTracked) {
-                return true;
-              }
-            }).map(({ title, workItemType, id, timeEstimate }) => {
-              return (
-                <Fragment key={id}>
-                  <WorkItem
-                    id={id}
-                    details={title}
-                    key={id}
-                    type={
-                      isTracked
-                        ? WorkItemTypes?.Recurring
-                        : (workItemType as any)
-                    }
-                    timeEstimate={timeEstimate}
-                  />
-                </Fragment>
-              );
-            })
-          ) : (
-            <EmptyData
-              buttonDescription="Filter Now"
-              description="No work Items Found with the current Filters"
-              onEmpty={() => setIsFiltering((prev) => !prev)}
-            />
-          )}
-        </div>
+          <div
+            className={!isEditing ? Style.container : Style.containerFiltering}
+          >
+            {ResolvedItems?.length ? (
+              ResolvedItems?.filter(({ tracked }) => {
+                if (!tracked && !isTracked) {
+                  return true;
+                } else if (tracked && isTracked) {
+                  return true;
+                }
+              }).map(({ title, workItemType, id, timeEstimate }) => {
+                return (
+                  <Fragment key={id}>
+                    <WorkItem
+                      id={id}
+                      details={title}
+                      key={id}
+                      type={
+                        isTracked
+                          ? WorkItemTypes?.Recurring
+                          : (workItemType as any)
+                      }
+                      timeEstimate={timeEstimate}
+                    />
+                  </Fragment>
+                );
+              })
+            ) : (
+              <EmptyData
+                buttonDescription="Filter Now"
+                description="No work Items Found with the current Filters"
+                onEmpty={() => setIsFiltering((prev) => !prev)}
+              />
+            )}
+          </div>
+        </Spin>
         <div className={Style.openFilter}>
           <div className={Style.configButtons}>
             <Button
@@ -159,7 +167,9 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
               }}
               onClick={() => logoutUser()}
             >
-              <MdLogout size={30} color="#838383" />
+              <Tooltip title={"Logout"} placement={"bottom"}>
+                <MdLogout size={30} color="#838383" />
+              </Tooltip>
             </Button>
           </div>
         </div>
