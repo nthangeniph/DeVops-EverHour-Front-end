@@ -3,7 +3,6 @@ import App from "next/app";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { RestfulProvider } from "restful-react";
-import { BASE_URL } from "../api/utils/constants";
 import { DevOpsProvider } from "../providers/devOps";
 import { EverHourProvider } from "../providers/everHour";
 import { AuthProvider } from "../providers/auth";
@@ -50,6 +49,8 @@ class Main extends App<{}, {}, IState> {
   //demo prepararion donec
   render() {
     const { Component, pageProps, router } = this.props;
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+    console.log(" process.env ::", process.env);
 
     return (
       //@ts-ignore

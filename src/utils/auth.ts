@@ -1,7 +1,7 @@
 import { LOGIN_URL } from "../routes";
 import jwt from 'jsonwebtoken';
 import { ILogin } from "../providers/auth/contexts";
-import { ACCESS_TOKEN_NAME, SECRET_KEY } from "../app-constants";
+import { ACCESS_TOKEN_NAME,  } from "../app-constants";
 import jwt_decode from "jwt-decode";
 import { IActiveUserInfo } from "../models/account.model";
 
@@ -27,7 +27,7 @@ export interface IDecodedToken {
 }
 
 
-
+const SECRET_KEY=process.env.NEXT_PUBLIC_SECRET_KEY;
 
 export const saveUserToken = (
   token: string,
