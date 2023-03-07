@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Tabs, Divider } from "antd";
 import { EditOutlined, LockFilled } from "@ant-design/icons";
 import style from "./style.module.scss";
+import Image from "next/image";
 import { useAuth } from "../../providers/auth";
 import { ILogin, ISignUp } from "../../providers/auth/contexts";
+import profilePic from "../../../public/pngtree-line-art-drawing-two-people-working-together-puzzle-png-image_3621638-removebg-preview.png";
 
 const Login = () => {
   const { loginUser, signUpUser, accountDetails, isInProgress } = useAuth();
@@ -31,9 +33,12 @@ const Login = () => {
 
   return (
     <div className={style.container}>
-      <div className={style.infoContainer}>
-        <p>A fun way of tracking time spent on your DevOps items</p>
-      </div>
+      <Image
+        src={profilePic}
+        alt="Picture of the company"
+        className={style.cover}
+      />
+
       <div className={style.tabContainer}>
         <Tabs
           centered

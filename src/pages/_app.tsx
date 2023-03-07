@@ -50,7 +50,6 @@ class Main extends App<{}, {}, IState> {
   render() {
     const { Component, pageProps, router } = this.props;
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-    console.log(" process.env ::", process.env);
 
     return (
       //@ts-ignore

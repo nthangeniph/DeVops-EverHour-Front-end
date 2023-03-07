@@ -20,16 +20,17 @@
     top: 40px;
 }
 
-.infoContainer {
-    background-image: url('../../../public/pngtree-line-art-drawing-two-people-working-together-puzzle-png-image_3621638-removebg-preview.png');
-    background-size: cover;
+.cover{
     width: 100%;
     height: 100%;
+    border: 2px solid red;
+    margin-left: 300px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     display: flex;
     align-items: flex-end;
     padding: 20px;
+
 }
 
 .infoContainer>p {
