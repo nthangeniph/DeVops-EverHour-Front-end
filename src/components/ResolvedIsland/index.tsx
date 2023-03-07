@@ -109,13 +109,13 @@ const ResolvedIsland: FC<IResolvedPROPs> = ({ ResolvedItems }) => {
                   </Fragment>
                 );
               })
-            ) : (
+            ) : !isFetchingWork_Items ? (
               <EmptyData
                 buttonDescription="Filter Now"
                 description="No work Items Found with the current Filters"
                 onEmpty={() => setIsFiltering((prev) => !prev)}
               />
-            )}
+            ) : null}
           </div>
         </Spin>
         <div className={Style.openFilter}>
