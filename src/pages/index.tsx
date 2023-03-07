@@ -5,8 +5,13 @@ import { Layout } from "antd";
 import style from "./style.module.scss";
 import { BsFileEarmarkCodeFill } from "react-icons/bs";
 import { withAuth } from "../hocs/withAuth";
+import { useEffect } from "react";
+import ReactGA from "react-ga";
 
 const Home: NextPage = () => {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  }, []);
   return (
     <div className={styles.container}>
       <DragDrop />

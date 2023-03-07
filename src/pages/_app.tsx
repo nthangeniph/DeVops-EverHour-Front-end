@@ -8,11 +8,16 @@ import { EverHourProvider } from "../providers/everHour";
 import { AuthProvider } from "../providers/auth";
 import { getToken } from "../utils/auth";
 import { ConfigurationProvider } from "../providers/configurations";
+import ReactGA from "react-ga";
 
 interface IState {
   headers: { [key: string]: string };
   tokenIsSet: boolean;
 }
+
+const TRACKING_ID = "UA-213657589-1";
+
+ReactGA.initialize(TRACKING_ID);
 
 class Main extends App<{}, {}, IState> {
   static async getInitialProps({
