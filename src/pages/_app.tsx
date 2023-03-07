@@ -66,6 +66,7 @@ class Main extends App<{}, {}, IState> {
           },
         }}
       >
+        {" "}
         <AuthProvider>
           <DevOpsProvider>
             <EverHourProvider>
