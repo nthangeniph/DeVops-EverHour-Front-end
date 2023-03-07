@@ -6,54 +6,54 @@ import { IUser } from "../../models/user.model";
 
 
 export type IFlagProgressFlags =
-  | 'signUpUSer'
-  | 'loginUSer'
-  | 'logoutUSer'
+  | 'signUpUser'
+  | 'loginUser'
+  | 'logoutUser'
  /* NEW_IN_PROGRESS_FLAG_GOES_HERE */;
 export type IFlagSucceededFlags =
-  | 'signUpUSer'
-  | 'loginUSer'
-  | 'logoutUSer'
+  | 'signUpUser'
+  | 'loginUser'
+  | 'logoutUser'
  /* NEW_SUCCEEDED_FLAG_GOES_HERE */;
 export type IFlagErrorFlags =
-  | 'signUpUSer'
-  | 'loginUSer'
-  | 'logoutUSer'
+  | 'signUpUser'
+  | 'loginUser'
+  | 'logoutUser'
    /* NEW_ERROR_FLAG_GOES_HERE */;
 export type IFlagActionedFlags =
-  | 'signUpUSer'
-  | 'loginUSer'
-  | 'logoutUSer'
+  | 'signUpUser'
+  | 'loginUser'
+  | 'logoutUser'
  /* NEW_ACTIONED_FLAG_GOES_HERE */;
-export interface ISignUp extends IAccount,IUser {}
-export interface ILogin{
-    _id?: string;
-    username?: string;
-    email?: string;
-    password?: string;
-    roles?: Array<IRoleOut>;
-    xApiKey?: string;
-    devOpsDisplayName?: string;
-    pat?: string;
-    devOpsUsername?: string;
+export interface ISignUp extends IAccount, IUser { }
+export interface ILogin {
+  _id?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  roles?: Array<IRoleOut>;
+  xApiKey?: string;
+  devOpsDisplayName?: string;
+  pat?: string;
+  devOpsUsername?: string;
 }
-export interface ILoginOut extends ILogin{
+export interface ILoginOut extends ILogin {
   accessToken?: string;
 }
 export interface IAuthStateContext
-extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
-  readonly accountDetails?:IAccountOut;
-  readonly activeUserInfo?:IActiveUserInfo;
-  readonly errorMessage?:string;
+  extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
+  readonly accountDetails?: IAccountOut;
+  readonly activeUserInfo?: IActiveUserInfo;
+  readonly errorMessage?: string;
 
 }
 
 export interface IAuthActionsContext
-extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
-  signUpUser?:(payload:ISignUp)=>void;
-  loginUser?:(payload:ILogin)=>void;
-  logoutUser?:() => void;
-  checkAuth?:(payload:IActiveUserInfo) => void;
+  extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
+  signUpUser?: (payload: ISignUp) => void;
+  loginUser?: (payload: ILogin) => void;
+  logoutUser?: () => void;
+  checkAuth?: (payload: IActiveUserInfo) => void;
 }
 
 export const AuthStateContext = createContext<IAuthStateContext>({});

@@ -32,7 +32,7 @@ export const withAuth =
       } else {
         push(DASHBOARD_PAGE_URL);
       }
-    }, [activeUserInfo?.accessToken]);
+    }, [isLogging, activeUserInfo?.accessToken]);
 
     const activeInfo = useMemo(() => {
       return activeUserInfo;
@@ -43,7 +43,7 @@ export const withAuth =
         getAllConfigurations(activeInfo?.id);
       }
     }, [activeUserInfo?.id]);
-    
+
     return isLogging && !activeInfo ? (
       <Bars
         height="250px"

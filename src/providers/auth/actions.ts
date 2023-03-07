@@ -1,6 +1,6 @@
 import { createAction } from "redux-actions";
 import { IAccountOut, IActiveUserInfo } from "../../models/account.model";
-import { IAuthStateContext, ISignUp } from "./contexts";
+import { IAuthStateContext } from "./contexts";
 
 export enum AuthActionEnums {
     CheckAuthAction = 'CHECK_AUTH_ACTION',
@@ -32,8 +32,9 @@ export enum AuthActionEnums {
 
   export const sigInUserAction = createAction<IAuthStateContext>(AuthActionEnums.LoginUserRequest, () => ({}));
   export const sigInUserSuccessAction = createAction<IAuthStateContext,IActiveUserInfo>(AuthActionEnums.LoginUserSuccess, (activeUserInfo) => ({activeUserInfo}));
-  export const logoutUserAction = createAction<IAuthStateContext,IActiveUserInfo>(AuthActionEnums.LogoutUser, (activeUserInfo) => ({activeUserInfo}));
   export const sigInUserErrorAction = createAction<IAuthStateContext,string>(AuthActionEnums.LoginUserError, (errorMessage) => ({errorMessage}));
+  export const logoutUserAction = createAction<IAuthStateContext,IActiveUserInfo>(AuthActionEnums.LogoutUser, (activeUserInfo) => ({activeUserInfo}));
+
 
 
   

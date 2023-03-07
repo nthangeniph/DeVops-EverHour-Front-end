@@ -9,6 +9,7 @@ import { AuthProvider } from "../providers/auth";
 import { getToken } from "../utils/auth";
 import { ConfigurationProvider } from "../providers/configurations";
 import ReactGA from "react-ga";
+import Head from "next/head";
 
 interface IState {
   headers: { [key: string]: string };
@@ -66,7 +67,10 @@ class Main extends App<{}, {}, IState> {
           },
         }}
       >
-        {" "}
+        <Head>
+          <title>DeVops_EverHour Integration</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <AuthProvider>
           <DevOpsProvider>
             <EverHourProvider>

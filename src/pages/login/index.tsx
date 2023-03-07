@@ -8,7 +8,8 @@ import { ILogin, ISignUp } from "../../providers/auth/contexts";
 import profilePic from "../../../public/pngtree-line-art-drawing-two-people-working-together-puzzle-png-image_3621638-removebg-preview.png";
 
 const Login = () => {
-  const { loginUser, signUpUser, accountDetails, isInProgress } = useAuth();
+  const { loginUser, signUpUser, accountDetails, isInProgress, succeeded } =
+    useAuth();
   const [activeTab, setActiveTab] = useState<string>("1");
 
   useEffect(() => {
@@ -29,6 +30,11 @@ const Login = () => {
 
   const handleLogin = (values: ILogin) => {
     loginUser(values);
+  };
+  const isLogigin = isInProgress?.loginUser || succeeded?.loginUser;
+
+  const validateMessages = {
+    required: "'${name}' is required!",
   };
 
   return (
@@ -56,14 +62,23 @@ const Login = () => {
               children: (
                 <Form
                   className={style.loginForm}
+                  validateMessages={validateMessages}
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 17 }}
                   onFinish={(values) => handleLogin(values)}
                 >
-                  <Form.Item label="Email/UserName" name="username">
+                  <Form.Item
+                    label="Email/UserName"
+                    name="username"
+                    rules={[{ required: true }]}
+                  >
                     <Input />
                   </Form.Item>
-                  <Form.Item label="Password" name="password">
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true }]}
+                  >
                     <Input.Password />
                   </Form.Item>
                   <br />
@@ -72,8 +87,8 @@ const Login = () => {
                       className={style.loginBtn}
                       htmlType="submit"
                       type="primary"
-                      disabled={isInProgress?.loginUSer}
-                      loading={isInProgress?.loginUSer}
+                      disabled={isLogigin}
+                      loading={isLogigin}
                     >
                       Sign In
                     </Button>
