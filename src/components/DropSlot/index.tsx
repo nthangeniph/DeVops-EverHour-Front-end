@@ -1,4 +1,11 @@
-import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Select,
+  Tooltip,
+} from "antd";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { FaProjectDiagram } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
@@ -11,7 +18,6 @@ import { MdDeleteForever } from "react-icons/md";
 import { useDrop } from "react-dnd";
 import { IResolvedProps } from "../EverHourDrop/Recenttask";
 import { IItemProps } from "../item";
-import timeSheet from "../timesheet.json";
 import style from "./style.module.scss";
 import { getWorkTypes, getWorkTypeSymbol } from "../EverHourDrop/utilis";
 import { ITimeSlot } from "../../models";
@@ -48,12 +54,16 @@ export const DropSlot: FC<IDropProps> = ({
 }) => {
   const [initialSlot, setInitialSlot] = useState<ITimeSlot>(slot);
   const { workItems: ResolvedItems, isInProgress, projects } = useDevOps();
-  const { updateTask } = useEverHour();
-  const { updateWorkItems, refreshWorkItems, getWorkItems } =
-    useDevOpsActions();
+  const { updateTask, weekTasks, getWeekTasks, timeSheets } = useEverHour();
+  const { updateWorkItems, refreshWorkItems, getWorkItems } =useDevOpsActions();
   const { isTracked } = useConfigurations();
   const [isManual, setIsManual] = useState<boolean>(false);
   const [slotHolder, setSlotHolder] = useState<IDevOpInfo[]>([]);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (!timeSheets?.length) getWeekTasks({ limit: "7" });
+  }, []);
 
   const time = useMemo(() => {
     if (initialSlot?.manualTime > 100) {
@@ -97,13 +107,6 @@ export const DropSlot: FC<IDropProps> = ({
       return true;
     },
   }));
-
-  const recentTasks = timeSheet[0].result.map(({ id, projectName }) => {
-    return {
-      id,
-      projectName,
-    };
-  });
 
   let workItems = useMemo(
     () =>
@@ -176,6 +179,8 @@ export const DropSlot: FC<IDropProps> = ({
     updateWorkItems(newUpdateItem);
     updateTask({
       ...initialSlot,
+      id: form.getFieldsValue().taskId,
+      date: form.getFieldsValue().date.format("YYYY-MM-DD"),
       manualTime:
         initialSlot.manualTime > 100
           ? initialSlot.manualTime
@@ -186,10 +191,27 @@ export const DropSlot: FC<IDropProps> = ({
   };
 
   const handleClose = () => {
-    getWorkItems();
+    if (!!initialSlot?.comment) getWorkItems();
     setInitialSlot({});
     setIsEditing(false);
   };
+  interface ITask {
+    id: string;
+    projectName: string;
+  }
+  const recentTaskst = useMemo(() => {
+    let availableTasks: ITask[] = [];
+    timeSheets
+      ?.map(({ weekTasks }) => weekTasks)
+      ?.map((week) => {
+        week.forEach(({ id, projectName }) => {
+          if (!availableTasks.find(({ id: idx }) => idx == id)?.id) {
+            availableTasks.push({ id, projectName });
+          }
+        });
+      });
+    return availableTasks;
+  }, [weekTasks]);
 
   return (
     <div className={style.editForm}>
@@ -236,19 +258,24 @@ export const DropSlot: FC<IDropProps> = ({
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
+        form={form}
         layout="horizontal"
-        initialValues={{ size: 200 }}
+        initialValues={{
+          date: moment(initialSlot?.date, dateFormat),
+          taskId: initialSlot?.taskId,
+        }}
       >
         <Form.Item
           label={
             <span>
-              Work item <MdWorkOutline color="green" />
+              Work item(s) <MdWorkOutline color="green" />
             </span>
           }
           required
           labelCol={{ span: 7 }}
         >
           <Select
+            disabled
             style={{ width: "100%" }}
             mode="multiple"
             value={resolveItemsId?.length ? resolveItemsId : undefined}
@@ -268,16 +295,14 @@ export const DropSlot: FC<IDropProps> = ({
           }
           required
           labelCol={{ span: 7 }}
+          name="taskId"
         >
-          <Select defaultValue={initialSlot?.taskId}>
-            {recentTasks.map(({ id, projectName }) => {
-              return (
-                <Select.Option value={id} key={id}>
-                  {projectName}
-                </Select.Option>
-              );
-            })}
-          </Select>
+          <Select
+            options={recentTaskst.map(({ id, projectName }) => ({
+              value: id,
+              label: projectName,
+            }))}
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -287,11 +312,9 @@ export const DropSlot: FC<IDropProps> = ({
           }
           required
           labelCol={{ span: 7 }}
+          name="date"
         >
-          <DatePicker
-            defaultValue={moment(initialSlot?.date, dateFormat)}
-            style={{ width: "100%" }}
-          />
+          <DatePicker style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item
           label={

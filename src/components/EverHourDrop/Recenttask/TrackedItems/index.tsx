@@ -20,7 +20,9 @@ export const TrackedItems: FC<ITrackedItemProps> = ({ timeSlot }) => {
       ?.map((y) => getWorkTypes(y)) || [];
   let createComents = timeSlot?.comment
     ?.split("|")
-    ?.map((commt, index) => <p key={`${commt}${index}`}>{`${index + 1}.${commt}`}</p>);
+    ?.map((commt, index) => (
+      <p key={`${commt}${index}`}>{`${index + 1}.${commt}`}</p>
+    ));
 
   return (
     <>

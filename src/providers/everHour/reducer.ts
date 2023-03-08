@@ -16,6 +16,12 @@ export function everHourReducer(
   switch (type) {
     case EverHourActionEnums.GetWeekTasksRequest:
     case EverHourActionEnums.GetWeekTasksSuccess:
+      console.log("new info ::", payload.timeSheets)
+      return {
+        ...state,
+        ...payload,
+      };
+
     case EverHourActionEnums.GetWeekTasksError:
     case EverHourActionEnums.UpdateTaskRequest:
     case EverHourActionEnums.UpdateTaskSuccess:

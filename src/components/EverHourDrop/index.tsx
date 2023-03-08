@@ -25,7 +25,7 @@ export const EverHourHub: FC<any> = ({}) => {
   const [slot, setSlot] = useState<ITimeSlot>();
   const [limit, setLimit] = useState<number>(7);
   const dataFetchedRef = useRef(false);
-  const { getWeekTasks, timeSheets } = useEverHour();
+  const { getWeekTasks, timeSheets, succeeded } = useEverHour();
 
   useEffect(() => {
     if (limit) {
@@ -34,6 +34,12 @@ export const EverHourHub: FC<any> = ({}) => {
       getWeekTasks({ limit: limit.toString() });
     }
   }, [limit]);
+
+  useEffect(() => {
+    if (succeeded.updateTask) {
+      getWeekTasks({ limit: limit.toString() });
+    }
+  }, [succeeded?.updateTask]);
 
   const handleDoubleClick = (data: ITimeSlot) => {
     let workItems = data?.comment?.split("|")?.map((tsk) => {
