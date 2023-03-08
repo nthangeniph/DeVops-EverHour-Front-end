@@ -36,7 +36,7 @@ export const EverHourHub: FC<any> = ({}) => {
   }, [limit]);
 
   useEffect(() => {
-    if (succeeded.updateTask) {
+    if (succeeded?.updateTask) {
       getWeekTasks({ limit: limit.toString() });
     }
   }, [succeeded?.updateTask]);
