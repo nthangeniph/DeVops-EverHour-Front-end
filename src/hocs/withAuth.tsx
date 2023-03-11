@@ -16,7 +16,7 @@ import { useConfigurations } from "../providers/configurations";
 export const withAuth =
   <P extends object>(Component: ComponentType<P>): FC<P> =>
   (...props) => {
-    const { isInProgress: isLogging, activeUserInfo, checkAuth } = useAuth();
+    const { isInProgress, activeUserInfo, checkAuth } = useAuth();
     const { getAllConfigurations, configurations } = useConfigurations();
 
     const router = useRouter();
@@ -32,11 +32,7 @@ export const withAuth =
       } else {
         push(DASHBOARD_PAGE_URL);
       }
-    }, [isLogging, activeUserInfo?.accessToken]);
-
-    const activeInfo = useMemo(() => {
-      return activeUserInfo;
-    }, [activeUserInfo]);
+    }, []);
 
     useEffect(() => {
       if (activeInfo?.id && !configurations?.userId) {
@@ -44,7 +40,11 @@ export const withAuth =
       }
     }, [activeUserInfo?.id]);
 
-    return isLogging && !activeInfo ? (
+    const activeInfo = useMemo(() => {
+      return activeUserInfo;
+    }, [activeUserInfo]);
+
+    return isInProgress?.loginUser ? (
       <Bars
         height="250px"
         width="100%"
@@ -54,7 +54,7 @@ export const withAuth =
         wrapperClass=""
         visible={true}
       />
-    ) : (
+    ) : activeInfo ? (
       <Component {...(props as P)} id={router.query.id} />
-    );
+    ) : null;
   };

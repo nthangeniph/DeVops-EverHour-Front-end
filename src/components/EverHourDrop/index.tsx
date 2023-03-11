@@ -1,14 +1,16 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useId, useRef, useState } from "react";
 import { EverHourHeader } from "./EverHourHeader";
 import { IResolvedProps, RecentTask } from "./Recenttask";
 import style from "./style.module.scss";
-import { Collapse } from "antd";
-import { v4 as uuidv4 } from "uuid";
+import { Button, Collapse } from "antd";
 import ReactLoading from "react-loading";
 import { getDaysMonth, getWeekHeader, timeIndicatorColor } from "./utilis";
 import { DropSlot } from "../DropSlot";
+import { v4 as uuidv4 } from "uuid";
 import { ITimeSlot } from "../../models";
 import { useEverHour } from "../../providers/everHour";
+import { DownOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { AddRecentTask } from "./Recenttask/AddRecentTask";
 
 const { Panel } = Collapse;
 
@@ -24,6 +26,7 @@ export const EverHourHub: FC<any> = ({}) => {
   const [isEditingMode, setIsEditing] = useState<boolean>(false);
   const [slot, setSlot] = useState<ITimeSlot>();
   const [limit, setLimit] = useState<number>(7);
+  const [] = useState<boolean>(false);
   const dataFetchedRef = useRef(false);
   const { getWeekTasks, timeSheets, succeeded } = useEverHour();
 
@@ -44,6 +47,7 @@ export const EverHourHub: FC<any> = ({}) => {
   const handleDoubleClick = (data: ITimeSlot) => {
     let workItems = data?.comment?.split("|")?.map((tsk) => {
       let length = tsk.length - 6;
+
       return {
         id: tsk.substring(length, length - 1),
         type: tsk.substring(length - 2, length + 3),
@@ -71,11 +75,6 @@ export const EverHourHub: FC<any> = ({}) => {
               }, 0);
               let timeIndicator = {};
               getDaysMonth(week.from, week.to).map((day) => {
-                //@ts-ignore
-                timeIndicator[day] = 0;
-              });
-
-              getDaysMonth(week.from, week.to).map((day) => {
                 let x = weekTasks
                   .map(({ taskTimes }) => {
                     if (taskTimes.find(({ date }) => date == day)?.id) {
@@ -83,12 +82,14 @@ export const EverHourHub: FC<any> = ({}) => {
                     }
                   })
                   .filter((task) => !!task?.id);
+
+                //  console.log("XX::", x);
+
                 //@ts-ignore
                 timeIndicator[day] = x.reduce((current, value) => {
                   return current + value.manualTime;
                 }, 0);
               });
-
               return (
                 <Panel
                   header={
@@ -121,6 +122,7 @@ export const EverHourHub: FC<any> = ({}) => {
 
                   {weekTasks?.map((task) => {
                     weekTotal = +task.totalTime;
+
                     return (
                       <RecentTask
                         key={uuidv4()}
@@ -135,6 +137,9 @@ export const EverHourHub: FC<any> = ({}) => {
                       />
                     );
                   })}
+                  <div className={style.addRecentTask}>
+                    <AddRecentTask />
+                  </div>
                 </Panel>
               );
             })}

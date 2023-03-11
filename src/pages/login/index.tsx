@@ -31,7 +31,7 @@ const Login = () => {
   const handleLogin = (values: ILogin) => {
     loginUser(values);
   };
-  const isLogigin = isInProgress?.loginUser || succeeded?.loginUser;
+  const isLogigin = isInProgress?.loginUser;
 
   const validateMessages = {
     required: "'${name}' is required!",

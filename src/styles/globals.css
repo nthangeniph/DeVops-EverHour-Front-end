@@ -75,12 +75,12 @@ a {
 
 .ant-btn.ant-btn-primary {
   /* background-color: black !important; */
-  background-color: #98e798 !important;
-  height: 55px;
-  width: 140px;
+  background-color: #81de81 !important;
+  height: 35px;
+  width: 130px;
   letter-spacing: 1px !important;
   border: none !important;
-  border-radius: 7px !important;
+  border-radius: 2px !important;
   position: relative;
   left: 35%;
 }

@@ -37,19 +37,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[0])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[0])[0],
             taskId: id,
-            date: weekdays[0],
+            date: swapDates(weekdays[0]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[0])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[0])[0],
             taskId: id,
             date: swapDates(weekdays[0]),
           }}
@@ -59,19 +55,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[1])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[1])[0],
             taskId: id,
-            date: weekdays[1],
+            date: swapDates(weekdays[1]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[1])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[1])[0],
             taskId: id,
             date: swapDates(weekdays[1]),
           }}
@@ -81,19 +73,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[2])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[2])[0],
             taskId: id,
-            date: weekdays[2],
+            date: swapDates(weekdays[2]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[2])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[2])[0],
             taskId: id,
             date: swapDates(weekdays[2]),
           }}
@@ -104,19 +92,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[3])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[3])[0],
             taskId: id,
-            date: weekdays[3],
+            date: swapDates(weekdays[3]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[3])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[3])[0],
             taskId: id,
             date: swapDates(weekdays[3]),
           }}
@@ -126,19 +110,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[4])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[4])[0],
             taskId: id,
-            date: weekdays[4],
+            date: swapDates(weekdays[4]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[4])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[4])[0],
             taskId: id,
             date: swapDates(weekdays[4]),
           }}
@@ -148,19 +128,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[5])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[5])[0],
             taskId: id,
-            date: weekdays[5],
+            date: swapDates(weekdays[5]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[5])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[5])[0],
             taskId: id,
             date: swapDates(weekdays[5]),
           }}
@@ -170,19 +146,15 @@ export const RecentTask: FC<IRecentTaskProps> = ({
         className={style.DayTask}
         onDoubleClick={() =>
           handleDoubleClick({
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[6])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[6])[0],
             taskId: id,
-            date: weekdays[6],
+            date: swapDates(weekdays[6]),
           })
         }
       >
         <TrackedItems
           timeSlot={{
-            ...taskTimes?.filter(
-              ({ date }) => date == swapDates(weekdays[6])
-            )[0],
+            ...taskTimes?.filter(({ date }) => date == weekdays[6])[0],
             taskId: id,
             date: swapDates(weekdays[6]),
           }}
@@ -202,7 +174,7 @@ export const RecentTask: FC<IRecentTaskProps> = ({
   );
 };
 
-function swapDates(date: string) {
+export function swapDates(date: string) {
   let day = date.split("-")[1];
   let month = date.split("-")[2];
   let year = date.split("-")[0];

@@ -14,15 +14,14 @@ const getDaysMonthArray = (start: any, end: any) => {
 const getDaysMonth = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/").reverse().join('-');
-        let tempDate = date.split('-').map(dt => {
-            return dt.length > 1 ? dt : `0${dt}`
-        });
-
-        arr.push(`${tempDate[0]}-${tempDate[2]}-${tempDate[1]}`);
+        let tempDate = date.split('-').map(dt => dt);
+        arr.push(`${tempDate[0]}-${tempDate[1]}-${tempDate[2]}`);
     }
+
 
     return arr;
 };
+
 
 const getWeekHeader = (start: any, end: any) => {
     let startDate = new Date(start).toLocaleDateString().split('/');
@@ -84,6 +83,7 @@ const timeIndicatorColor = (time: number) => {
     if (hours > 10) {
         return 'red'
     } else if (5 < hours && hours <= 10) {
+        console.log("hours", hours)
         return 'green'
 
     } else if (hours < 5) {

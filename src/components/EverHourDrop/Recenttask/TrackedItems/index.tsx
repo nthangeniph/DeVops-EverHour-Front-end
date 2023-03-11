@@ -4,6 +4,7 @@ import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { GetWorkItemType } from "../../../ResolvedIsland/Workitem/utilis";
 import style from "./style.module.scss";
 import { Tooltip } from "antd";
+import { v4 as uuidv4 } from "uuid";
 import { convertSecondsToHours, getWorkTypes } from "../../utilis";
 
 export interface ITrackedItemProps {
@@ -20,9 +21,7 @@ export const TrackedItems: FC<ITrackedItemProps> = ({ timeSlot }) => {
       ?.map((y) => getWorkTypes(y)) || [];
   let createComents = timeSlot?.comment
     ?.split("|")
-    ?.map((commt, index) => (
-      <p key={`${commt}${index}`}>{`${index + 1}.${commt}`}</p>
-    ));
+    ?.map((commt, index) => <p key={uuidv4()}>{`${index + 1}.${commt}`}</p>);
 
   return (
     <>
