@@ -68,6 +68,7 @@ export const EverHourHub: FC<any> = ({}) => {
             defaultActiveKey={["1"]}
             style={{ width: "100%" }}
             bordered={true}
+            accordion
           >
             {timeSheets.map(({ weekTasks, week }, index) => {
               let weekTotal = weekTasks?.reduce((totalWeek, { totalTime }) => {
@@ -115,7 +116,7 @@ export const EverHourHub: FC<any> = ({}) => {
                       </div>
                     </div>
                   }
-                  key={index + 1}
+                  key={`${index + 1}`}
                   className={style.custom}
                 >
                   <EverHourHeader week={week} key={uuidv4()} />
