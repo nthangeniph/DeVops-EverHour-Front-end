@@ -1,3 +1,5 @@
+import { WorkItemTypes } from "../../enums";
+
 const getDaysMonthArray = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/");
@@ -12,19 +14,24 @@ const getDaysMonthArray = (start: any, end: any) => {
 const getDaysMonth = (start: any, end: any) => {
     for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         const date = new Date(dt).toLocaleDateString().split("/").reverse().join('-');
-        arr.push(date);
+        let tempDate = date.split('-').map(dt => dt);
+        arr.push(`${tempDate[0]}-${tempDate[1]}-${tempDate[2]}`);
     }
+
+
     return arr;
 };
 
+
 const getWeekHeader = (start: any, end: any) => {
     let startDate = new Date(start).toLocaleDateString().split('/');
-    let endDate = new Date(end).toLocaleDateString().split('/')
+    let endDate = new Date(end).toLocaleDateString().split('/');
     return `${getMonth(parseInt(startDate[1]))} ${startDate[0]} -- ${getMonth(parseInt(endDate[1]))} ${endDate[0]}`
 }
 
 
 function getMonth(date: number) {
+
     switch (date) {
         case 1:
             return 'January'
@@ -71,8 +78,56 @@ const convertSecondsToHours = (time: number, toSeconds = false) => {
 }
 
 
+const timeIndicatorColor = (time: number) => {
+    const hours = convertSecondsToHours(time);
+    if (hours > 10) {
+        return 'red'
+    } else if (5 < hours && hours <= 10) {
+        console.log("hours", hours)
+        return 'green'
+
+    } else if (hours < 5) {
+        return 'gray'
+    } else {
+        return 'white'
+    }
+}
+function getWorkTypes(x: string) {
+    switch (x) {
+        case 'bg':
+            return WorkItemTypes.Bug;
+        case 'us':
+            return WorkItemTypes.User_Story;
+        case 'ft':
+            return WorkItemTypes.Feature;
+        case 'ts':
+            return WorkItemTypes.Task;
+        case 'rc':
+            return WorkItemTypes.Recurring;
+
+    }
+}
+function getWorkTypeSymbol(x: WorkItemTypes) {
+    switch (x) {
+        case WorkItemTypes.Bug:
+            return 'bg';
+        case WorkItemTypes.User_Story:
+            return 'us';
+        case WorkItemTypes.Feature:
+            return 'ft';
+        case WorkItemTypes.Task:
+            return 'ts';
+        case WorkItemTypes.Recurring:
+            return 'rc';
+        default:
+            return 'bg';
+    }
+}
 
 
 
 
-export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours, getWeekHeader }
+
+
+
+export { getDaysMonthArray, getDaysMonth, getMonth, convertSecondsToHours, timeIndicatorColor, getWeekHeader, getWorkTypes, getWorkTypeSymbol }

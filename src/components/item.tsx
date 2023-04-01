@@ -8,6 +8,7 @@ export interface IItemProps{
     id:string;
     details?:string;
     type:WorkItemTypes;
+    timeEstimate:number
 }
 const Item=({id,details}:IItemProps)=>{
     const [{isDragging},drag]=useDrag(()=>({

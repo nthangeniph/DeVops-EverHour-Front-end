@@ -1,18 +1,80 @@
+
+.editForm{
+    // background-color: rgb(182, 219, 208);
+    background-color: whitesmoke;
+    min-height: 23rem;
+    max-height: 27rem;
+    width: 26rem;
+    padding: 2rem;
+    margin-top: -2.5rem;
+    border: solid 1px gray;
+    opacity: 0.99;
+
 .dropContainer{
         display: flex;
-        flex: 1;
-        border: dashed 2px black;
-        padding: 2px;
-        height: 3rem;
+        flex: 1 ;
+        border: dashed 2px #999393;
+        background-color: #c1c1c1;
+        padding-top: 5px;
+        min-height:  5.5rem;
+        height: fit-content;
+        width: 100%;
+        padding-bottom: 4px;
         justify-content: center;
-    
+        margin-top: -0.9rem;
+        margin-bottom: 1.2rem;
 
 }
 .isOverColumn{
     display: flex;
     flex: 2;
     border: solid 3px green;
+    background-color: rgb(240, 246, 247);
     padding: 2px;
     height: 5rem;
     justify-content: center;
+    margin-top: -0.8rem;
+    margin-bottom: 0.9rem;
+}
+
+.editButtons{
+    width: 100%;
+    height:2rem;
+    margin-bottom: 5rem !important;
+    display: flex;
+    justify-content: center;
+
+    .buttons{
+        margin-left: 10px;
+        color:'white';
+    }
+    
+}
+.ItemPreview{
+    display: block;
+    width: 18%;
+    height: 4.5rem;
+    margin-right: 10px;
+    justify-content:center ;
+    background-color: white;
+    border-radius: 0.7rem;
+    border-left: solid #950806 0.4px;
+    border-bottom: solid #950806 0.4px;
+    
+
+    .itemIcon{
+        height: 65%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .removeItem{
+        margin: 0 auto;
+        background-color: #c1c1c1;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+    }
+}
 }

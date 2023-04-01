@@ -1,0 +1,21 @@
+.Description{
+    display: block;
+   width: 400px;
+   justify-content: center;
+
+}
+
+.antBtnAntBtnPrimary {
+    /* background-color: black !important; */
+background-color: #98e798 !important;
+height: 55px;
+width: 140px;
+letter-spacing: 1px !important;
+border: none !important;
+border-radius: 7px !important;
+position: relative;
+left: 1.89%;
+}
+.antBtnAntBtnPrimary:hover{
+    cursor: pointer;
+}

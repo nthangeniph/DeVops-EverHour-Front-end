@@ -1,0 +1,29 @@
+.hideFilters{
+    display: none;
+}
+.filter{
+    width: 350px;
+    height: auto;
+    background-color: azure;
+    z-index: 100;
+    border: solid 2px lightblue;
+    position: absolute;
+    top: 3rem;
+    right: 0.08rem;
+    padding: auto;
+    transition: width 6s, height 6s;
+
+    .buttons{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: right;
+        margin: 10px;
+
+    }
+    .inputs{
+        width: 95%;
+    }
+
+
+
+}

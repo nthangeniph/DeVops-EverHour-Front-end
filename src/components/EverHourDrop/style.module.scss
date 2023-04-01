@@ -1,7 +1,7 @@
 .outCover{
 .Board{
     width: 90%;
-    height: 495Px;
+    height: 40rem;
     background-color: #F0FFFF;
     margin: 5px auto 20px auto;
     display: flex;
@@ -9,25 +9,29 @@
     flex-wrap: wrap;
     color: black;
     border: solid 2px #32527b;
-    overflow-y: scroll;
+    overflow-y: hidden;
     position: relative;
 
 }
+.Board:hover{
+    overflow-y: scroll;
+}
 .addEdit{
     width: 87%;
-    height: 495Px;
-    margin: 5px auto 20px auto;
+    min-height: 31rem;
+    max-height: 45rem;
+    margin: 3rem auto 20px auto;
     background-color: rgba(255, 255, 255, .15);  
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(6px);
     position: absolute;
-    z-index: 4;
-    top:265px;
+    height: 110% !important;
+    z-index: 1000;
+    top:18.3rem;
     left: 6.5%;
 
     .dropIsland{
         width:30%;
         height: 60%;
-        background-color: #F0FFFF;
         margin:4% auto;
 
     }
@@ -40,4 +44,45 @@
       padding: 0;
       background-color: aquamarine;
      }
+
+  }
+  .loading{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    justify-content: center;
+
+    .loaderIcon{
+        margin: auto;
+    }
+  }
+  .weekHeader{
+    display: flex;
+    .headerText{
+        width: 18rem;
+    }
+
+    .timeReview{
+     display: flex;
+     margin:auto 1.2rem;
+     width:11rem;
+     height: 2rem;
+     background-color: inherit;
+     .indicator{
+        width: .7rem;
+        height: .7rem;
+        border-radius: 50%;
+        border: solid 1px black;
+        margin: auto 0px auto 10px;
+        background-color: #d82d16;
+     }
+    }
+    
+  }
+  .addRecentTask{
+    background-color: #d7d6d6;
+    width: 100%;
+    height: 3rem;
+    padding: 0 3rem;
   }

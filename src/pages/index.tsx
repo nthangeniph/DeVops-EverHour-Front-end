@@ -1,31 +1,34 @@
-import type { NextPage } from 'next'
-import Image from 'next/image'
-import DragDrop from '../components/DragDrop'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import DragDrop from "../components/DragDrop";
+import styles from "../styles/Home.module.css";
+import { Layout } from "antd";
+import style from "./style.module.scss";
+import { BsFileEarmarkCodeFill } from "react-icons/bs";
+import { withAuth } from "../hocs/withAuth";
+import { useEffect } from "react";
+import ReactGA from "react-ga";
 
 const Home: NextPage = () => {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  }, []);
   return (
     <div className={styles.container}>
-     
-      <DragDrop/>
-        
-      
+      <DragDrop />
 
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <Layout.Footer className={style.footer}>
+        <span style={{ cursor: "pointer" }}>
+          {" "}
+          <BsFileEarmarkCodeFill
+            style={{ marginRight: "5px", cursor: "pointer" }}
+            color="green"
+            size={15}
+          />{" "}
+          Developed with Passion By P Nthangeni
+        </span>
+      </Layout.Footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default withAuth(Home);
