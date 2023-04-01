@@ -1,16 +1,14 @@
-import React, { FC, useEffect, useId, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { EverHourHeader } from "./EverHourHeader";
 import { IResolvedProps, RecentTask } from "./Recenttask";
 import style from "./style.module.scss";
-import { Button, Collapse } from "antd";
 import ReactLoading from "react-loading";
 import { getDaysMonth, getWeekHeader, timeIndicatorColor } from "./utilis";
 import { DropSlot } from "../DropSlot";
 import { v4 as uuidv4 } from "uuid";
 import { ITimeSlot } from "../../models";
 import { useEverHour } from "../../providers/everHour";
-import { DownOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import { AddRecentTask } from "./Recenttask/AddRecentTask";
+import { Collapse } from "antd";
 
 const { Panel } = Collapse;
 
@@ -138,9 +136,9 @@ export const EverHourHub: FC<any> = ({}) => {
                       />
                     );
                   })}
-                  <div className={style.addRecentTask}>
+                  {/* <div className={style.addRecentTask}>
                     <AddRecentTask />
-                  </div>
+                  </div> */}
                 </Panel>
               );
             })}

@@ -22,7 +22,7 @@ const ConfigurationProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [state, dispatch] = useReducer(configurtationReducer, {});
   const { activeUserInfo } = useAuth();
   const { refetch: getConfigurationHttp } = useGet({
-    path: `/api/configurations/getConfigById/${activeUserInfo?.user?.id}`,
+    path: `/api/configurations/getConfigById`,
     lazy: true,
   });
   const { mutate: updateConfigurationHttp } = useMutate({
@@ -32,7 +32,8 @@ const ConfigurationProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const getAllConfigurations = (userId: string) => {
     dispatch(getConfigurationAction());
     getConfigurationHttp({
-      path: `/api/configurations/getConfigById/${userId}`,
+      path: `/api/configurations/getConfigById`,
+      queryParams: { userId },
     })
       .then(({ configuration }) => {
         dispatch(getConfigurationSuccessAction(configuration));
@@ -52,9 +53,9 @@ const ConfigurationProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         dispatch(updateConfigErrorAction(error));
       });
   };
-  const updateIsTracked=(isTracked: boolean) => {
+  const updateIsTracked = (isTracked: boolean) => {
     dispatch(updateIsTrackedAction(isTracked));
-  }
+  };
   return (
     <ConfigurationStateContext.Provider value={state}>
       <ConfigurationActionsContext.Provider
@@ -62,7 +63,7 @@ const ConfigurationProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           ...getFlagSetters(dispatch),
           updateConfigurations,
           getAllConfigurations,
-          updateIsTracked
+          updateIsTracked,
 
           /* NEW_ACTION_GOES_HERE */
         }}
